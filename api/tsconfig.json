@@ -1,0 +1,25 @@
+{
+  "$schema": "https://www.schemastore.org/tsconfig",
+  "_version": "24.0.0",
+
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "lib": ["ES2024"],
+    "module": "nodenext",
+    "target": "es2024",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "nodenext",
+
+    "types": ["node"],
+
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}
+
