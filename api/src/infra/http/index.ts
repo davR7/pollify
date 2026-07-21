@@ -1,5 +1,5 @@
 import cors from "cors";
-import express, { Application } from "express";
+import express, { Application, Router } from "express";
 import helmet from "helmet";
 import { CatchAllMiddleware } from "./middlewares/catch-all.middleware";
 import { NotFoundMiddleware } from "./middlewares/not-found.middleware";
@@ -7,8 +7,9 @@ import { NotFoundMiddleware } from "./middlewares/not-found.middleware";
 class App {
   private app: Application = express();
 
-  constructor() {
+  constructor(private router: Router = Router()) {
     this.setupLoaders();
+    this.setupRoutes();
     this.setupErrHandler();
   }
 
@@ -17,6 +18,10 @@ class App {
     this.app.use(express.json());
     this.app.use(cors());
     this.app.use(helmet());
+  }
+
+  private setupRoutes() {
+    this.app.use(this.router);
   }
 
   private setupErrHandler() {
