@@ -1,6 +1,6 @@
 import { CreateUserUseCase } from "@/use-cases/user/create-user.use-case";
-import { BcryptHasher } from "./crypto/bcrypt.hasher";
 import { UserPrismaRepository } from "./repositories/user-prisma.repository";
+import { BcryptHasher } from "./security/bcrypt.hasher";
 
 class Container {
   //infra
