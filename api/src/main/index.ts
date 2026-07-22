@@ -1,4 +1,4 @@
-import { App } from "./infra/http";
+import { App } from "@/infra/http";
 
 const app = new App();
 const port = Number(process.env.PORT);
