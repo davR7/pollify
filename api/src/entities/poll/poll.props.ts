@@ -9,13 +9,17 @@ export type PollProps = {
   authorId: string;
 };
 
-export type PersistedPollProps = {
+export type PersistedPollProps = Omit<PersistedPoll, "authorId"> & {
+  options: PollOption[];
+};
+
+export type PersistedPoll = {
   id: string;
   title: string;
-  options: PollOption[];
   status: PollStatus;
   startsAt: Date | null;
   endsAt: Date | null;
+  authorId: string;
   createdAt: Date;
   updatedAt: Date;
 };
