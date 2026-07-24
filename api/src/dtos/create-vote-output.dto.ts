@@ -1,6 +1,6 @@
 export interface CreateVoteOutputDto {
   id: string;
-  authorId: string;
+  userId: string;
   pollId: string;
   optionId: string;
   createdAt: Date;

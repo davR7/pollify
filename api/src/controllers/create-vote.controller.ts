@@ -13,8 +13,8 @@ class CreateVoteController {
   ) {
     const body = req.body;
     const pollId = req.params.pollId;
-    const authorId = res.locals.userId;
-    const output = await this.createVoteUseCase.execute({ ...body, pollId, authorId });
+    const userId = res.locals.userId;
+    const output = await this.createVoteUseCase.execute({ ...body, pollId, userId });
     return res.status(201).json(output);
   }
 }

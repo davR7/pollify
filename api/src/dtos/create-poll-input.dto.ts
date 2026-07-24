@@ -7,5 +7,5 @@ export interface CreatePollInputDto {
   status?: PollStatus;
   startsAt?: Date;
   endsAt?: Date;
-  authorId: string;
+  userId: string;
 }

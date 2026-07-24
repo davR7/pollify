@@ -11,8 +11,8 @@ class CreatePollController {
     res: ExpressResponse<CreatePollOutputDto>,
   ) {
     const body = req.body;
-    const authorId = res.locals.userId;
-    const output = await this.createPollUseCase.execute({ ...body, authorId });
+    const userId = res.locals.userId;
+    const output = await this.createPollUseCase.execute({ ...body, userId });
     return res.status(201).json(output);
   }
 }

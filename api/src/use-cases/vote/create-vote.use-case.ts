@@ -11,16 +11,16 @@ class CreateVoteUseCase {
     private pollRepository: PollRepository,
   ) {}
 
-  async execute({ authorId, pollId, optionId }: CreateVoteInput2Dto): Promise<CreateVoteOutputDto> {
+  async execute({ userId, pollId, optionId }: CreateVoteInput2Dto): Promise<CreateVoteOutputDto> {
     const poll = await this.pollRepository.getPollById(pollId);
     if (!poll) {
       throw new NotFoundError("poll not found");
     }
-    const vote = await this.voteRepository.findByPollAndUser(pollId, authorId);
+    const vote = await this.voteRepository.findByPollAndUser(pollId, userId);
     if (vote) {
       throw new ConflictError("User has already voted.");
     }
-    const newVote = await this.voteRepository.create({ authorId, optionId, pollId });
+    const newVote = await this.voteRepository.create({ userId, optionId, pollId });
     return newVote;
   }
 }

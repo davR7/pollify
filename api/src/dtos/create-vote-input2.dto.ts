@@ -1,5 +1,5 @@
 export interface CreateVoteInput2Dto {
-  authorId: string;
+  userId: string;
   pollId: string;
   optionId: string;
 }

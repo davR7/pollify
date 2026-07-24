@@ -6,6 +6,6 @@ export interface ListPollOutputDto {
   status: PollStatus;
   startsAt: Date | null;
   endsAt: Date | null;
-  authorId: string;
+  userId: string;
   createdAt: Date;
 }

@@ -6,10 +6,10 @@ export type PollProps = {
   status?: PollStatus;
   startsAt?: Date | null;
   endsAt?: Date | null;
-  authorId: string;
+  userId: string;
 };
 
-export type PersistedPollProps = Omit<PersistedPoll, "authorId"> & {
+export type PersistedPollProps = Omit<PersistedPoll, "userId"> & {
   options: PollOption[];
 };
 
@@ -19,7 +19,7 @@ export type PersistedPoll = {
   status: PollStatus;
   startsAt: Date | null;
   endsAt: Date | null;
-  authorId: string;
+  userId: string;
   createdAt: Date;
   updatedAt: Date;
 };

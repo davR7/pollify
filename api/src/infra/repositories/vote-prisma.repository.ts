@@ -15,8 +15,8 @@ class VotePrismaRepository implements VoteRepository {
     return vote;
   }
 
-  async findByPollAndUser(pollId: string, authorId: string): Promise<PersistedVoteProps | null> {
-    const vote = await prisma.vote.findFirst({ where: { pollId, authorId } });
+  async findByPollAndUser(pollId: string, userId: string): Promise<PersistedVoteProps | null> {
+    const vote = await prisma.vote.findFirst({ where: { pollId, userId } });
     return vote;
   }
 }

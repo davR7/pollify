@@ -1,12 +1,12 @@
 export interface VoteProps {
-  authorId: string;
+  userId: string;
   pollId: string;
   optionId: string;
 }
 
 export interface PersistedVoteProps {
   id: string;
-  authorId: string;
+  userId: string;
   pollId: string;
   optionId: string;
   createdAt: Date;
