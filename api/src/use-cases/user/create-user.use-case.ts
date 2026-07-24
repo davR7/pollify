@@ -12,7 +12,7 @@ class CreateUserUseCase {
   ) {}
 
   async execute({ fullname, email, password }: CreateUserInputDto): Promise<CreateUserOutputDto> {
-    const user = await this.userRepository.getUserByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
     if (user) {
       throw new ConflictError("User Already exists");
     }

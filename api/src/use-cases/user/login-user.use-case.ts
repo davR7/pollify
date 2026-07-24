@@ -13,7 +13,7 @@ class LoginUserUseCase {
   ) {}
 
   async execute({ email, password }: LoginUserInputDto): Promise<LoginUserOutputDto> {
-    const user = await this.userRepository.getUserByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
     if (!user) {
       throw new BadRequestError("Invalid email or password. (email)");
     }
