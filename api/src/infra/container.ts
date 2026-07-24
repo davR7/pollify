@@ -1,16 +1,19 @@
-import { CreateUserUseCase } from "@/use-cases/user/create-user.use-case";
-import { UserPrismaRepository } from "./repositories/user-prisma.repository";
-import { BcryptHasher } from "./security/bcrypt.hasher";
-import { LoginUserUseCase } from "@/use-cases/user/login-user.use-case";
-import { JwtTokenProvider } from "./security/jwt-token-provider";
-import { PollPrismaRepository } from "./repositories/poll-prisma.repository";
 import { CreatePollUseCase } from "@/use-cases/poll/create-poll.use-case";
 import { ListPollUseCase } from "@/use-cases/poll/list-poll.use-case";
+import { CreateUserUseCase } from "@/use-cases/user/create-user.use-case";
+import { LoginUserUseCase } from "@/use-cases/user/login-user.use-case";
+import { CreateVoteUseCase } from "@/use-cases/vote/create-vote.use-case";
+import { PollPrismaRepository } from "./repositories/poll-prisma.repository";
+import { UserPrismaRepository } from "./repositories/user-prisma.repository";
+import { VotePrismaRepository } from "./repositories/vote-prisma.repository";
+import { BcryptHasher } from "./security/bcrypt.hasher";
+import { JwtTokenProvider } from "./security/jwt-token-provider";
 
 class Container {
   //repository
   private readonly userRepository = new UserPrismaRepository();
   private readonly pollRepository = new PollPrismaRepository();
+  private readonly voteRepository = new VotePrismaRepository();
 
   //services
   private readonly bcryptHasher = new BcryptHasher();
@@ -31,6 +34,10 @@ class Container {
   );
   private readonly createPollUseCase = new CreatePollUseCase(this.pollRepository);
   private readonly listPollUseCase = new ListPollUseCase(this.pollRepository);
+  private readonly createVoteUseCase = new CreateVoteUseCase(
+    this.voteRepository,
+    this.pollRepository,
+  );
 
   //getter methods
   getCreateUserUseCase() {
@@ -44,6 +51,9 @@ class Container {
   }
   getListPollUseCase() {
     return this.listPollUseCase;
+  }
+  getCreateVoteUseCase() {
+    return this.createVoteUseCase;
   }
 }
 
