@@ -1,12 +1,17 @@
 import { Request, Response, Router } from "express";
 import { CreatePollController } from "@/controllers/create-poll.controller";
+import { ListPollController } from "@/controllers/list-poll.controller";
 import { container } from "@/infra/container";
 import authMiddleware from "../middlewares/auth.middleware";
 
 const createPoll = new CreatePollController(container.getCreatePollUseCase());
+const listPoll = new ListPollController(container.getListPollUseCase());
 
 export default (router: Router) => {
   router.post("/polls", authMiddleware, (req: Request, res: Response) => {
     createPoll.handler(req, res);
+  });
+  router.get("/polls", authMiddleware, (req: Request, res: Response) => {
+    listPoll.handler(req, res);
   });
 };
