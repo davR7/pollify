@@ -12,7 +12,7 @@ class CreateVoteUseCase {
   ) {}
 
   async execute({ userId, pollId, optionId }: CreateVoteInput2Dto): Promise<CreateVoteOutputDto> {
-    const poll = await this.pollRepository.getPollById(pollId);
+    const poll = await this.pollRepository.findById(pollId);
     if (!poll) {
       throw new NotFoundError("poll not found");
     }

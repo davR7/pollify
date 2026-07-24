@@ -28,7 +28,7 @@ class PollPrismaRepository implements PollRepository {
     return polls;
   }
 
-  async getPollById(id: string): Promise<PersistedPollProps | null> {
+  async findById(id: string): Promise<PersistedPollProps | null> {
     const poll = await prisma.poll.findUnique({
       where: { id },
       include: {
