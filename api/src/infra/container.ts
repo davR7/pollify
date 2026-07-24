@@ -3,10 +3,15 @@ import { UserPrismaRepository } from "./repositories/user-prisma.repository";
 import { BcryptHasher } from "./security/bcrypt.hasher";
 import { LoginUserUseCase } from "@/use-cases/user/login-user.use-case";
 import { JwtTokenProvider } from "./security/jwt-token-provider";
+import { PollPrismaRepository } from "./repositories/poll-prisma.repository";
+import { CreatePollUseCase } from "@/use-cases/poll/create-poll.use-case";
 
 class Container {
-  //infra
+  //repository
   private readonly userRepository = new UserPrismaRepository();
+  private readonly pollRepository = new PollPrismaRepository();
+
+  //services
   private readonly bcryptHasher = new BcryptHasher();
   private readonly jwtTokenProvider = new JwtTokenProvider(
     process.env.SECRET,
@@ -23,6 +28,7 @@ class Container {
     this.bcryptHasher,
     this.jwtTokenProvider,
   );
+  private readonly createPollUseCase = new CreatePollUseCase(this.pollRepository);
 
   //getter methods
   getCreateUserUseCase() {
@@ -30,6 +36,9 @@ class Container {
   }
   getLoginUserUseCase() {
     return this.loginUserUseCase;
+  }
+  getCreatePollUseCase() {
+    return this.createPollUseCase;
   }
 }
 
