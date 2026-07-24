@@ -1,4 +1,9 @@
-import { PersistedPollProps, PollOptionProps, PollProps } from "@/entities/poll/poll.props";
+import {
+  PersistedPoll,
+  PersistedPollProps,
+  PollOptionProps,
+  PollProps,
+} from "@/entities/poll/poll.props";
 import { PollRepository } from "@/repositories/poll.repository";
 import { prisma } from "../database/prisma";
 
@@ -17,6 +22,12 @@ class PollPrismaRepository implements PollRepository {
     });
     return newPoll;
   }
+
+  async list(): Promise<PersistedPoll[]> {
+    const polls = await prisma.poll.findMany();
+    return polls;
+  }
+
   async getPollById(id: string): Promise<PersistedPollProps | null> {
     const poll = await prisma.poll.findUnique({
       where: { id },
