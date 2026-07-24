@@ -13,11 +13,63 @@ model User {
   email String @unique
   password String
   role UserRole @default(USER)
+  polls Poll[]
+  votes Vote[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
+
+  @@map("users")
+}
+
+model Poll {
+  id String @id @default(uuid())
+  title String @unique
+  options PollOption[]
+  status PollStatus @default(DRAFT)
+  startsAt DateTime?
+  endsAt DateTime?
+  author User @relation(fields: [authorId], references: [id])
+  authorId String
+  votes Vote[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@map("polls")
+}
+
+model PollOption {
+  id String @id @default(uuid())
+  text String
+  poll Poll @relation(fields: [pollId], references: [id])
+  pollId String
+  votes Vote[]
+  createdAt DateTime @default(now())
+
+  @@map("poll_options")
+}
+
+model Vote {
+  id String @id @default(uuid())
+  author User @relation(fields: [authorId], references: [id])
+  authorId String
+  poll Poll @relation(fields: [pollId], references: [id])
+  pollId String
+  option PollOption @relation(fields: [optionId], references: [id])
+  optionId String
+  createdAt DateTime @default(now())
+
+  @@unique([pollId, authorId])
+  @@map("votes")
 }
 
 enum UserRole {
   USER
   ADMIN
+}
+
+enum PollStatus {
+  DRAFT
+  OPEN
+  CLOSED
 }
