@@ -5,6 +5,7 @@ import { LoginUserUseCase } from "@/use-cases/user/login-user.use-case";
 import { JwtTokenProvider } from "./security/jwt-token-provider";
 import { PollPrismaRepository } from "./repositories/poll-prisma.repository";
 import { CreatePollUseCase } from "@/use-cases/poll/create-poll.use-case";
+import { ListPollUseCase } from "@/use-cases/poll/list-poll.use-case";
 
 class Container {
   //repository
@@ -29,6 +30,7 @@ class Container {
     this.jwtTokenProvider,
   );
   private readonly createPollUseCase = new CreatePollUseCase(this.pollRepository);
+  private readonly listPollUseCase = new ListPollUseCase(this.pollRepository);
 
   //getter methods
   getCreateUserUseCase() {
@@ -39,6 +41,9 @@ class Container {
   }
   getCreatePollUseCase() {
     return this.createPollUseCase;
+  }
+  getListPollUseCase() {
+    return this.listPollUseCase;
   }
 }
 
