@@ -8,11 +8,11 @@ class CreateVoteController {
   constructor(private createVoteUseCase: CreateVoteUseCase) {}
 
   async handler(
-    req: ExpressRequest<CreateVoteInputDto, CreateVoteParamsDto>,
+    req: ExpressRequest<CreateVoteInputDto>,
     res: ExpressResponse<CreateVoteOutputDto>,
   ) {
     const body = req.body;
-    const pollId = req.params.pollId;
+    const { pollId } = req.params as CreateVoteParamsDto;
     const userId = res.locals.userId;
     const output = await this.createVoteUseCase.execute({ ...body, pollId, userId });
     return res.status(201).json(output);
