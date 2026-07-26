@@ -35,6 +35,17 @@ class PollPrismaRepository implements PollRepository {
     });
     return poll;
   }
+  async update(id: string, input: Partial<PollProps>): Promise<PersistedPoll> {
+    const poll = await prisma.poll.update({
+      where: { id },
+      data: {
+        status: input.status,
+        startsAt: input.startsAt,
+        endsAt: input.endsAt,
+      },
+    });
+    return poll;
+  }
   async deleteById(id: string): Promise<void> {
     await prisma.poll.delete({ where: { id } });
   }
