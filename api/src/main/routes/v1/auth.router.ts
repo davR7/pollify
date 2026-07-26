@@ -7,10 +7,10 @@ const createUser = new CreateUserController(container.getCreateUserUseCase());
 const loginUser = new LoginUserController(container.getLoginUserUseCase());
 
 export default (router: Router) => {
-  router.post("/signup", (req: Request, res: Response) => {
-    createUser.handler(req, res);
+  router.post("/signup", async (req: Request, res: Response) => {
+    await createUser.handler(req, res);
   });
-  router.post("/signin", (req: Request, res: Response) => {
-    loginUser.handler(req, res);
+  router.post("/signin", async (req: Request, res: Response) => {
+    await loginUser.handler(req, res);
   });
 };

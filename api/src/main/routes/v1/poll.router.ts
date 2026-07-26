@@ -14,19 +14,19 @@ const updatePoll = new UpdatePollController(container.getUpdatePollUseCase());
 const delPoll = new DeletePollController(container.getDeletePollUseCase());
 
 export default (router: Router) => {
-  router.post("/polls", authMiddleware, (req: Request, res: Response) => {
-    createPoll.handler(req, res);
+  router.post("/polls", authMiddleware, async (req: Request, res: Response) => {
+    await createPoll.handler(req, res);
   });
-  router.get("/polls", authMiddleware, (req: Request, res: Response) => {
-    listPoll.handler(req, res);
+  router.get("/polls", authMiddleware, async (req: Request, res: Response) => {
+    await listPoll.handler(req, res);
   });
-  router.patch("/polls/:id", authMiddleware, (req: Request, res: Response) => {
-    updatePoll.handler(req, res);
+  router.patch("/polls/:id", authMiddleware, async (req: Request, res: Response) => {
+    await updatePoll.handler(req, res);
   });
-  router.delete("/polls/:id", authMiddleware, (req: Request, res: Response) => {
-    delPoll.handler(req, res);
+  router.delete("/polls/:id", authMiddleware, async (req: Request, res: Response) => {
+    await delPoll.handler(req, res);
   });
-  router.post("/polls/:pollId/votes", authMiddleware, (req: Request, res: Response) => {
-    createVote.handler(req, res);
+  router.post("/polls/:pollId/votes", authMiddleware, async (req: Request, res: Response) => {
+    await createVote.handler(req, res);
   });
 };
