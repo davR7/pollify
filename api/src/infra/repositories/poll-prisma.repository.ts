@@ -22,7 +22,7 @@ class PollPrismaRepository implements PollRepository {
     });
     return newPoll;
   }
-  async list(): Promise<PersistedPoll[]> {
+  async findAll(): Promise<PersistedPoll[]> {
     const polls = await prisma.poll.findMany();
     return polls;
   }

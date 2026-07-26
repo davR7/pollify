@@ -3,6 +3,6 @@ import { PersistedPoll, PersistedPollProps, PollProps } from "@/entities/poll/po
 export interface PollRepository {
   create(input: PollProps): Promise<PersistedPollProps>;
   findById(id: string): Promise<PersistedPollProps | null>;
-  list(): Promise<PersistedPoll[]>;
+  findAll(): Promise<PersistedPoll[]>;
   deleteById(id: string): Promise<void>;
 }
