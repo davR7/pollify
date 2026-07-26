@@ -4,4 +4,5 @@ export interface PollRepository {
   create(input: PollProps): Promise<PersistedPollProps>;
   findById(id: string): Promise<PersistedPollProps | null>;
   list(): Promise<PersistedPoll[]>;
+  deleteById(id: string): Promise<void>;
 }
