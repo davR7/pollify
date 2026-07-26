@@ -1,4 +1,5 @@
 import { CreatePollUseCase } from "@/use-cases/poll/create-poll.use-case";
+import { DeletePollUseCase } from "@/use-cases/poll/delete-poll.use-case";
 import { ListPollUseCase } from "@/use-cases/poll/list-poll.use-case";
 import { CreateUserUseCase } from "@/use-cases/user/create-user.use-case";
 import { LoginUserUseCase } from "@/use-cases/user/login-user.use-case";
@@ -34,6 +35,7 @@ class Container {
   );
   private readonly createPollUseCase = new CreatePollUseCase(this.pollRepository);
   private readonly listPollUseCase = new ListPollUseCase(this.pollRepository);
+  private readonly deletePollUseCase = new DeletePollUseCase(this.pollRepository);
   private readonly createVoteUseCase = new CreateVoteUseCase(
     this.voteRepository,
     this.pollRepository,
@@ -51,6 +53,9 @@ class Container {
   }
   getListPollUseCase() {
     return this.listPollUseCase;
+  }
+  getDeletePollUseCase() {
+    return this.deletePollUseCase;
   }
   getCreateVoteUseCase() {
     return this.createVoteUseCase;
