@@ -13,7 +13,7 @@ export const createPollSchema = z.object({
         text: z
           .string()
           .trim()
-          .min(6, "Option text is required.")
+          .min(1, "Option text is required.")
           .max(100, "Option text must be at most 100 characters long."),
       }),
     )
