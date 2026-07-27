@@ -4,7 +4,7 @@ export type UserProps = {
   fullname: string;
   email: string;
   password: string;
-  role?: UserRole;
+  role: UserRole;
 };
 
 export type PersistedUserProps = UserProps & {
