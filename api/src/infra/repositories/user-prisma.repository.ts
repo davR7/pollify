@@ -14,6 +14,11 @@ class UserPrismaRepository implements UserRepository {
     const user = await prisma.user.findUnique({ where: { email } });
     return user;
   }
+
+  async findById(id: string): Promise<PersistedUserProps | null> {
+    const user = await prisma.user.findUnique({ where: { id } });
+    return user;
+  }
 }
 
 export { UserPrismaRepository };
