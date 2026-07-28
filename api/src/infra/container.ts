@@ -11,6 +11,7 @@ import { UserPrismaRepository } from "./repositories/user-prisma.repository";
 import { VotePrismaRepository } from "./repositories/vote-prisma.repository";
 import { BcryptHasher } from "./security/bcrypt.hasher";
 import { JwtTokenProvider } from "./security/jwt-token-provider";
+import { ListPollUserUseCase } from "@/use-cases/poll/list-poll-user.use-case";
 
 class Container {
   //repository
@@ -38,6 +39,7 @@ class Container {
   private readonly createPollUseCase = new CreatePollUseCase(this.pollRepository);
   private readonly listPollUseCase = new ListPollUseCase(this.pollRepository);
   private readonly listAvailablePollUseCase = new ListAvailablePollUseCase(this.pollRepository);
+  private readonly listPollUserUseCase = new ListPollUserUseCase(this.pollRepository);
   private readonly deletePollUseCase = new DeletePollUseCase(this.pollRepository);
   private readonly updatePollUseCase = new UpdatePollUseCase(this.pollRepository);
   private readonly createVoteUseCase = new CreateVoteUseCase(
@@ -60,6 +62,9 @@ class Container {
   }
   getListAvailablePollUseCase() {
     return this.listAvailablePollUseCase;
+  }
+  getListPollUserUseCase() {
+    return this.listPollUserUseCase;
   }
   getUpdatePollUseCase() {
     return this.updatePollUseCase;
