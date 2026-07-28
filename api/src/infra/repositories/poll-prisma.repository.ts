@@ -4,8 +4,7 @@ import {
   PollOptionProps,
   PollProps,
 } from "@/entities/poll/poll.props";
-import { PollStatus } from "@/entities/poll/poll-status";
-import { PollRepository } from "@/repositories/poll.repository";
+import { FindPollFilter, PollRepository } from "@/repositories/poll.repository";
 import { prisma } from "../database/prisma";
 
 class PollPrismaRepository implements PollRepository {
@@ -14,7 +13,9 @@ class PollPrismaRepository implements PollRepository {
       data: {
         ...input,
         options: {
-          create: input.options.map((option: PollOptionProps) => ({ text: option.text })),
+          create: input.options.map((option: PollOptionProps) => ({
+            text: option.text,
+          })),
         },
       },
       include: {
@@ -27,12 +28,12 @@ class PollPrismaRepository implements PollRepository {
     const polls = await prisma.poll.findMany();
     return polls;
   }
-  async findMany(): Promise<PersistedPoll[]> {
+  async findMany(filter: FindPollFilter): Promise<PersistedPoll[]> {
     const polls = await prisma.poll.findMany({
       where: {
-        status: {
-          in: [PollStatus.OPEN, PollStatus.CLOSED],
-        },
+        id: filter?.id,
+        userId: filter?.userId,
+        status: Array.isArray(filter?.status) ? { in: filter?.status } : filter?.status,
       },
     });
     return polls;
