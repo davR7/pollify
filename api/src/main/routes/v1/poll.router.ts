@@ -4,6 +4,7 @@ import { CreateVoteController } from "@/controllers/create-vote.controller";
 import { DeletePollController } from "@/controllers/delete-poll.controller";
 import { ListAvailablePollController } from "@/controllers/list-available-poll.controller";
 import { ListPollController } from "@/controllers/list-poll.controller";
+import { ListPollUserController } from "@/controllers/list-poll-user.controller";
 import { UpdatePollController } from "@/controllers/update-poll.controller";
 import { UserRole } from "@/entities/user/user-role";
 import { container } from "@/infra/container";
@@ -19,6 +20,7 @@ const createPoll = new CreatePollController(container.getCreatePollUseCase());
 const createVote = new CreateVoteController(container.getCreateVoteUseCase());
 const listPoll = new ListPollController(container.getListPollUseCase());
 const listAvailablePoll = new ListAvailablePollController(container.getListAvailablePollUseCase());
+const listPollUser = new ListPollUserController(container.getListPollUserUseCase());
 const updatePoll = new UpdatePollController(container.getUpdatePollUseCase());
 const delPoll = new DeletePollController(container.getDeletePollUseCase());
 
@@ -31,6 +33,9 @@ export default (router: Router) => {
       await createPoll.handler(req, res);
     },
   );
+  router.get("/my/polls", authMiddleware, async (req: Request, res: Response) => {
+    await listPollUser.handler(req, res);
+  });
   router.get("/polls", authMiddleware, async (req: Request, res: Response) => {
     await listAvailablePoll.handler(req, res);
   });
