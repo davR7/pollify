@@ -1,5 +1,3 @@
 node_modules
-/generated/prisma
+api/src/infra/database/prisma/generated/
 .env
-
-/src/generated/prisma
