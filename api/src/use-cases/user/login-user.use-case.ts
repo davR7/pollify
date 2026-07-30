@@ -15,11 +15,11 @@ class LoginUserUseCase {
   async execute({ email, password }: LoginUserInputDto): Promise<LoginUserOutputDto> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
-      throw new BadRequestError("Invalid email or password. (email)");
+      throw new BadRequestError("Invalid email or password");
     }
     const passwordHash = await this.passwordHasher.compare(password, user.password);
     if (!passwordHash) {
-      throw new BadRequestError("Invalid email or password. (password)");
+      throw new BadRequestError("Invalid email or password");
     }
     const token = this.tokenProvider.generateToken({ sub: user.id });
     return { token };
