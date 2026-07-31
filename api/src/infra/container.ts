@@ -2,6 +2,7 @@ import { CreatePollUseCase } from "@/use-cases/poll/create-poll.use-case";
 import { DeletePollUseCase } from "@/use-cases/poll/delete-poll.use-case";
 import { ListAvailablePollUseCase } from "@/use-cases/poll/list-available-poll.use-case";
 import { ListPollUseCase } from "@/use-cases/poll/list-poll.use-case";
+import { ListPollUserUseCase } from "@/use-cases/poll/list-poll-user.use-case";
 import { UpdatePollUseCase } from "@/use-cases/poll/update-poll.use-case";
 import { CreateUserUseCase } from "@/use-cases/user/create-user.use-case";
 import { LoginUserUseCase } from "@/use-cases/user/login-user.use-case";
@@ -11,7 +12,7 @@ import { UserPrismaRepository } from "./repositories/user-prisma.repository";
 import { VotePrismaRepository } from "./repositories/vote-prisma.repository";
 import { BcryptHasher } from "./security/bcrypt.hasher";
 import { JwtTokenProvider } from "./security/jwt-token-provider";
-import { ListPollUserUseCase } from "@/use-cases/poll/list-poll-user.use-case";
+import { GetCurrentUserUseCase } from "@/use-cases/user/get-current-user.use-case";
 
 class Container {
   //repository
@@ -36,6 +37,7 @@ class Container {
     this.bcryptHasher,
     this.jwtTokenProvider,
   );
+  private readonly currentUserUseCase = new GetCurrentUserUseCase(this.userRepository);
   private readonly createPollUseCase = new CreatePollUseCase(this.pollRepository);
   private readonly listPollUseCase = new ListPollUseCase(this.pollRepository);
   private readonly listAvailablePollUseCase = new ListAvailablePollUseCase(this.pollRepository);
@@ -53,6 +55,9 @@ class Container {
   }
   getLoginUserUseCase() {
     return this.loginUserUseCase;
+  }
+  getCurrentUserUseCase() {
+    return this.currentUserUseCase;
   }
   getCreatePollUseCase() {
     return this.createPollUseCase;
