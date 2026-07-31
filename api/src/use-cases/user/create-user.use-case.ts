@@ -24,7 +24,7 @@ class CreateUserUseCase {
       password: hash,
       role: UserRole.USER,
     });
-    return UserMapper.toOutput(newUser);
+    return UserMapper.toCreateUserOutput(newUser);
   }
 }
 
