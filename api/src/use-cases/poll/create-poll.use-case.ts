@@ -12,7 +12,7 @@ class CreatePollUseCase {
       ...input,
       status: PollStatus.DRAFT,
     });
-    return PollMapper.toOutput(newPoll);
+    return PollMapper.toCreatePollOutput(newPoll);
   }
 }
 
