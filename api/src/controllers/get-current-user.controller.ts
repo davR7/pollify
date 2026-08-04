@@ -1,6 +1,6 @@
 import { GetCurrentUserOutputDto } from "@/dtos/get-current-user-output.dto";
 import { ExpressRequest, ExpressResponse } from "@/infra/http/types";
-import { GetCurrentUserUseCase } from "@/use-cases/user/get-current-user.use-case";
+import { GetCurrentUserUseCase } from "@/use-cases/auth/get-current-user.use-case";
 
 class GetCurrentUserController {
   constructor(private getCurrentUserUseCase: GetCurrentUserUseCase) {}
