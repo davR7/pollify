@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { TokenPayload, TokenProvider } from "@/use-cases/user/ports/token-provider";
+import { TokenPayload, TokenProvider } from "@/use-cases/auth/ports/token-provider";
 
 class JwtTokenProvider implements TokenProvider {
   constructor(

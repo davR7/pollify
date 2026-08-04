@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { PasswordHasher } from "@/use-cases/user/ports/password-hasher";
+import { PasswordHasher } from "@/use-cases/auth/ports/password-hasher";
 
 class BcryptHasher implements PasswordHasher {
   constructor(private salt = 10) {}
