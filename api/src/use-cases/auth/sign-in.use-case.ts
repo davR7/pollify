@@ -1,18 +1,18 @@
-import { LoginUserInputDto } from "@/dtos/login-user-input.dto";
-import { LoginUserOutputDto } from "@/dtos/login-user-output.dto";
+import { SignInInputDto } from "@/dtos/sign-in-input.dto";
+import { SignInOutputDto } from "@/dtos/sign-in-output.dto";
 import { UserRepository } from "@/repositories/user.repository";
 import { BadRequestError } from "@/shared/errors/bad-request.error";
 import { PasswordHasher } from "./ports/password-hasher";
 import { TokenProvider } from "./ports/token-provider";
 
-class LoginUserUseCase {
+class SignInUseCase {
   constructor(
     private userRepository: UserRepository,
     private passwordHasher: PasswordHasher,
     private tokenProvider: TokenProvider,
   ) {}
 
-  async execute({ email, password }: LoginUserInputDto): Promise<LoginUserOutputDto> {
+  async execute({ email, password }: SignInInputDto): Promise<SignInOutputDto> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
       throw new BadRequestError("Invalid email or password");
@@ -26,4 +26,4 @@ class LoginUserUseCase {
   }
 }
 
-export { LoginUserUseCase };
+export { SignInUseCase };
