@@ -1,9 +1,9 @@
-import { CreateUserOutputDto } from "@/dtos/create-user-output.dto";
+import { SignUpOutputDto } from "@/dtos/sign-up-output.dto";
 import { GetCurrentUserOutputDto } from "@/dtos/get-current-user-output.dto";
 import { PersistedUserProps } from "@/entities/user/user.props";
 
 export class UserMapper {
-  static toCreateUserOutput(input: PersistedUserProps): CreateUserOutputDto {
+  static toSignUpOutput(input: PersistedUserProps): SignUpOutputDto {
     return {
       id: input.id,
       fullname: input.fullname,

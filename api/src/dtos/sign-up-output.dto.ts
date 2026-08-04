@@ -1,6 +1,6 @@
 import { UserRole } from "@/entities/user/user-role";
 
-export interface CreateUserOutputDto {
+export interface SignUpOutputDto {
   id: string;
   fullname: string;
   email: string;
