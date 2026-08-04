@@ -4,15 +4,15 @@ import { ListAvailablePollUseCase } from "@/use-cases/poll/list-available-poll.u
 import { ListPollUseCase } from "@/use-cases/poll/list-poll.use-case";
 import { ListPollUserUseCase } from "@/use-cases/poll/list-poll-user.use-case";
 import { UpdatePollUseCase } from "@/use-cases/poll/update-poll.use-case";
-import { CreateUserUseCase } from "@/use-cases/user/create-user.use-case";
-import { LoginUserUseCase } from "@/use-cases/user/login-user.use-case";
+import { SignUpUseCase } from "@/use-cases/auth/sign-up.use-case";
+import { SignInUseCase } from "@/use-cases/auth/sign-in.use-case";
 import { CreateVoteUseCase } from "@/use-cases/vote/create-vote.use-case";
 import { PollPrismaRepository } from "./repositories/poll-prisma.repository";
 import { UserPrismaRepository } from "./repositories/user-prisma.repository";
 import { VotePrismaRepository } from "./repositories/vote-prisma.repository";
 import { BcryptHasher } from "./security/bcrypt.hasher";
 import { JwtTokenProvider } from "./security/jwt-token-provider";
-import { GetCurrentUserUseCase } from "@/use-cases/user/get-current-user.use-case";
+import { GetCurrentUserUseCase } from "@/use-cases/auth/get-current-user.use-case";
 
 class Container {
   //repository
@@ -28,11 +28,11 @@ class Container {
   );
 
   //use-case
-  private readonly createUserUseCase = new CreateUserUseCase(
+  private readonly signUpUseCase = new SignUpUseCase(
     this.userRepository,
     this.bcryptHasher,
   );
-  private readonly loginUserUseCase = new LoginUserUseCase(
+  private readonly signInUseCase = new SignInUseCase(
     this.userRepository,
     this.bcryptHasher,
     this.jwtTokenProvider,
@@ -50,11 +50,11 @@ class Container {
   );
 
   //getter methods
-  getCreateUserUseCase() {
-    return this.createUserUseCase;
+  getSignUpUseCase() {
+    return this.signUpUseCase;
   }
-  getLoginUserUseCase() {
-    return this.loginUserUseCase;
+  getSignInUseCase() {
+    return this.signInUseCase;
   }
   getCurrentUserUseCase() {
     return this.currentUserUseCase;
