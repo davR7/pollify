@@ -1,0 +1,55 @@
+import { createBrowserRouter } from "react-router-dom";
+import { PrivateLayout, PublicLayout } from "../layouts";
+import { SignInPage, SignUpPage } from "../pages/auth";
+import { MyPollsPage } from "../pages/polls/my-polls";
+import { NewPollPage } from "../pages/polls/new-poll";
+import { PollDetailsPage } from "../pages/polls/poll-details";
+import { PollList } from "../pages/polls/polls-list";
+import { NotFoundPage } from "../pages/system/not-found";
+import { RequireAuth } from "./guards/RequireAuth";
+
+export const router = createBrowserRouter([
+  {
+    element: <PublicLayout />,
+    children: [
+      {
+        path: "/signin",
+        element: <SignInPage />,
+      },
+      {
+        path: "/signup",
+        element: <SignUpPage />,
+      },
+    ],
+  },
+  {
+    element: <RequireAuth />,
+    children: [
+      {
+        element: <PrivateLayout />,
+        children: [
+          {
+            path: "/",
+            element: <MyPollsPage />,
+          },
+          {
+            path: "/polls",
+            element: <PollList />,
+          },
+          {
+            path: "/polls/:id",
+            element: <PollDetailsPage />,
+          },
+          {
+            path: "/polls/new",
+            element: <NewPollPage />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
+  },
+]);
