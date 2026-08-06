@@ -4,7 +4,8 @@ declare global {
       DATABASE_URL: string;
       NODE_ENV: "development" | "production";
       PORT: string;
-      SECRET: string;
+      ACCESS_TOKEN_SECRET: string;
+      REFRESH_TOKEN_SECRET: string;
       JWT_EXPIRES_IN: string;
     }
   }
