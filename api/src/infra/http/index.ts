@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, Router } from "express";
 import helmet from "helmet";
@@ -16,6 +17,7 @@ class App {
   private setupLoaders() {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
+    this.app.use(cookieParser());
     this.app.use(
       cors({
         origin: process.env.FRONTEND_URL,
