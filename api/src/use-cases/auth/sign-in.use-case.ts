@@ -1,7 +1,11 @@
 import { SignInInputDto } from "@/dtos/sign-in-input.dto";
 import { SignInOutputDto } from "@/dtos/sign-in-output.dto";
 import { UserRepository } from "@/repositories/user.repository";
-import { BadRequestError } from "@/shared/errors/bad-request.error";
+import {
+  ACCESS_TOKEN_EXPIRES_IN,
+  REFRESH_TOKEN_EXPIRES_IN,
+} from "@/shared/constants/auth.constants";
+import { UnauthorizedError } from "@/shared/errors/unauthorized.error";
 import { PasswordHasher } from "./ports/password-hasher";
 import { TokenProvider } from "./ports/token-provider";
 
@@ -15,14 +19,21 @@ class SignInUseCase {
   async execute({ email, password }: SignInInputDto): Promise<SignInOutputDto> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
-      throw new BadRequestError("Invalid email or password");
+      throw new UnauthorizedError("Invalid email or password");
     }
     const passwordHash = await this.passwordHasher.compare(password, user.password);
     if (!passwordHash) {
-      throw new BadRequestError("Invalid email or password");
+      throw new UnauthorizedError("Invalid email or password");
     }
-    const token = this.tokenProvider.generateToken({ sub: user.id });
-    return { token };
+    const accessToken = await this.tokenProvider.generateAccessToken(
+      { sub: user.id },
+      ACCESS_TOKEN_EXPIRES_IN,
+    );
+    const refreshToken = await this.tokenProvider.generateRefreshToken(
+      { sub: user.id },
+      REFRESH_TOKEN_EXPIRES_IN,
+    );
+    return { accessToken, refreshToken };
   }
 }
 
