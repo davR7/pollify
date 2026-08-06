@@ -1,8 +1,10 @@
 export interface TokenPayload {
-  sub?: string;
+  sub: string;
 }
 
 export interface TokenProvider {
-  generateToken(payload: { sub: string }): string;
-  verifyToken(payload: string): TokenPayload | string;
+  generateAccessToken(payload: { sub: string }, expiresIn: number): string;
+  generateRefreshToken(payload: { sub: string }, expiresIn: number): string;
+  verifyAccessToken(payload: string): TokenPayload;
+  verifyRefreshToken(payload: string): TokenPayload;
 }
