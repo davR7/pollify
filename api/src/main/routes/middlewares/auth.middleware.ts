@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { UnauthorizedError } from "@/shared/errors/unauthorized.error";
+import { AuthMalformedTokenError } from "@/shared/errors/auth-malformed-token.error";
+import { AuthMissingTokenError } from "@/shared/errors/auth-missing-token.error";
+import { AuthInvalidTokenError } from "@/shared/errors/auth-token-invalid.error";
 import { TokenProvider } from "@/use-cases/auth/ports/token-provider";
 
 export default function authMiddleware(tokenProvider: TokenProvider) {
@@ -7,17 +9,17 @@ export default function authMiddleware(tokenProvider: TokenProvider) {
     const authheader = req.headers.authorization;
 
     if (!authheader) {
-      throw new UnauthorizedError("No access token provided");
+      throw new AuthMissingTokenError("Access token is missing");
     }
 
     const parts = authheader.split(" ");
     if (!(parts.length === 2)) {
-      throw new UnauthorizedError("Access token Error");
+      throw new AuthInvalidTokenError("Access token is invalid");
     }
 
     const [schema, accessToken] = parts;
     if (!/^Bearer$/i.test(schema)) {
-      throw new UnauthorizedError("Access token malformatted");
+      throw new AuthMalformedTokenError("Access token is malformed");
     }
 
     const user = tokenProvider.verifyAccessToken(accessToken);
