@@ -15,7 +15,12 @@ import { votePollSchema } from "@/schemas/vote-poll.schema";
 import authMiddleware from "../middlewares/auth.middleware";
 import ensureAdmin from "../middlewares/ensure-admin.middleware";
 import { zodValidatorMiddleware } from "../middlewares/zod-validator.middleware";
+import { JwtTokenProvider } from "@/infra/security/jwt-token-provider";
 
+const jwtTokenProvider = new JwtTokenProvider(
+  process.env.ACCESS_TOKEN_SECRET,
+  process.env.REFRESH_TOKEN_SECRET,
+);
 const createPoll = new CreatePollController(container.getCreatePollUseCase());
 const createVote = new CreateVoteController(container.getCreateVoteUseCase());
 const listPoll = new ListPollController(container.getListPollUseCase());
@@ -27,21 +32,21 @@ const delPoll = new DeletePollController(container.getDeletePollUseCase());
 export default (router: Router) => {
   router.post(
     "/polls",
-    authMiddleware,
+    authMiddleware(jwtTokenProvider),
     zodValidatorMiddleware("body", createPollSchema),
     async (req: Request, res: Response) => {
       await createPoll.handler(req, res);
     },
   );
-  router.get("/my/polls", authMiddleware, async (req: Request, res: Response) => {
+  router.get("/my/polls", authMiddleware(jwtTokenProvider), async (req: Request, res: Response) => {
     await listPollUser.handler(req, res);
   });
-  router.get("/polls", authMiddleware, async (req: Request, res: Response) => {
+  router.get("/polls", authMiddleware(jwtTokenProvider), async (req: Request, res: Response) => {
     await listAvailablePoll.handler(req, res);
   });
   router.get(
     "/admin/polls",
-    authMiddleware,
+    authMiddleware(jwtTokenProvider),
     ensureAdmin([UserRole.ADMIN]),
     async (req: Request, res: Response) => {
       await listPoll.handler(req, res);
@@ -49,7 +54,7 @@ export default (router: Router) => {
   );
   router.patch(
     "/polls/:id",
-    authMiddleware,
+    authMiddleware(jwtTokenProvider),
     zodValidatorMiddleware("body", updatePollSchema),
     async (req: Request, res: Response) => {
       await updatePoll.handler(req, res);
@@ -57,7 +62,7 @@ export default (router: Router) => {
   );
   router.delete(
     "/polls/:id",
-    authMiddleware,
+    authMiddleware(jwtTokenProvider),
     zodValidatorMiddleware("params", deletePollSchema),
     async (req: Request, res: Response) => {
       await delPoll.handler(req, res);
@@ -65,7 +70,7 @@ export default (router: Router) => {
   );
   router.post(
     "/polls/:pollId/votes",
-    authMiddleware,
+    authMiddleware(jwtTokenProvider),
     zodValidatorMiddleware("body", votePollSchema),
     async (req: Request, res: Response) => {
       await createVote.handler(req, res);
