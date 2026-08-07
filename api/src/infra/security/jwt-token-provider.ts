@@ -1,5 +1,7 @@
 import jwt, { TokenExpiredError } from "jsonwebtoken";
-import { UnauthorizedError } from "@/shared/errors/unauthorized.error";
+import { AuthMalformedTokenError } from "@/shared/errors/auth-malformed-token.error";
+import { AuthTokenExpiredError } from "@/shared/errors/auth-token-expired.error";
+import { AuthInvalidTokenError } from "@/shared/errors/auth-token-invalid.error";
 import { TokenPayload, TokenProvider } from "@/use-cases/auth/ports/token-provider";
 
 class JwtTokenProvider implements TokenProvider {
@@ -17,28 +19,28 @@ class JwtTokenProvider implements TokenProvider {
     try {
       const payload = jwt.verify(token, this.accessTokenSecret) as TokenPayload;
       if (typeof payload === "string") {
-        throw new UnauthorizedError("Invalid access token payload format");
+        throw new AuthMalformedTokenError("Access token is malformed.");
       }
       return payload;
     } catch (error) {
       if (error instanceof TokenExpiredError) {
-        throw new UnauthorizedError("access token expired");
+        throw new AuthTokenExpiredError("Access token has expired");
       }
-      throw new UnauthorizedError("access token invalid");
+      throw new AuthInvalidTokenError("Access token is invalid");
     }
   }
   verifyRefreshToken(token: string): TokenPayload {
     try {
       const payload = jwt.verify(token, this.refreshTokenSecret) as TokenPayload;
       if (typeof payload === "string") {
-        throw new UnauthorizedError("Invalid refresh token payload format");
+        throw new AuthMalformedTokenError("Refresh token is malformed.");
       }
       return payload;
     } catch (error) {
       if (error instanceof TokenExpiredError) {
-        throw new UnauthorizedError("refresh token expired");
+        throw new AuthTokenExpiredError("Refresh token has expired");
       }
-      throw new UnauthorizedError("refresh token invalid");
+      throw new AuthInvalidTokenError("Refresh token is invalid");
     }
   }
 }
