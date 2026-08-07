@@ -13,6 +13,7 @@ import { VotePrismaRepository } from "./repositories/vote-prisma.repository";
 import { BcryptHasher } from "./security/bcrypt.hasher";
 import { JwtTokenProvider } from "./security/jwt-token-provider";
 import { GetCurrentUserUseCase } from "@/use-cases/auth/get-current-user.use-case";
+import { RefreshTokenUseCase } from "@/use-cases/auth/refresh-token.use-case";
 
 class Container {
   //repository
@@ -23,18 +24,19 @@ class Container {
   //services
   private readonly bcryptHasher = new BcryptHasher();
   private readonly jwtTokenProvider = new JwtTokenProvider(
-    process.env.SECRET,
-    Number(process.env.JWT_EXPIRES_IN),
+    process.env.ACCESS_TOKEN_SECRET,
+    process.env.REFRESH_TOKEN_SECRET,
   );
 
   //use-case
-  private readonly signUpUseCase = new SignUpUseCase(
-    this.userRepository,
-    this.bcryptHasher,
-  );
+  private readonly signUpUseCase = new SignUpUseCase(this.userRepository, this.bcryptHasher);
   private readonly signInUseCase = new SignInUseCase(
     this.userRepository,
     this.bcryptHasher,
+    this.jwtTokenProvider,
+  );
+  private readonly refreshTokenUseCase = new RefreshTokenUseCase(
+    this.userRepository,
     this.jwtTokenProvider,
   );
   private readonly currentUserUseCase = new GetCurrentUserUseCase(this.userRepository);
@@ -55,6 +57,9 @@ class Container {
   }
   getSignInUseCase() {
     return this.signInUseCase;
+  }
+  getRefreshTokenUseCase() {
+    return this.refreshTokenUseCase;
   }
   getCurrentUserUseCase() {
     return this.currentUserUseCase;
