@@ -1,6 +1,6 @@
-import { UnauthorizedError } from "./unauthorized.error";
+import { ForbiddenError } from "./forbidden.error";
 
-class AuthTokenExpiredError extends UnauthorizedError {
+class AuthTokenExpiredError extends ForbiddenError {
   constructor(message: string) {
     super(message);
     this.name = "TokenExpiredError";
