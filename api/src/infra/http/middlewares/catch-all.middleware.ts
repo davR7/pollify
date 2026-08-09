@@ -15,12 +15,12 @@ function CatchAllMiddleware(err: Error, _req: Request, res: Response, _next: Nex
   }
 
   if (err instanceof HttpError) {
-    const message = mode ? err.message : STATUS_CODES[err.code];
+    const message = mode ? err.message : STATUS_CODES[err.statusCode];
 
-    return res.status(err.code).json({
+    return res.status(err.statusCode).json({
       error: err.name,
       message: message,
-      statusCode: err.code,
+      statusCode: err.statusCode,
     });
   }
 

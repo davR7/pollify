@@ -1,7 +1,7 @@
 class HttpError extends Error {
   constructor(
     message: string,
-    public readonly code: number,
+    public readonly statusCode: number,
   ) {
     super(message);
     this.name = "HttpError";
