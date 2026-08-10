@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { setAccessToken } from "@/services/access-token.store";
 import * as authService from "@/services/auth.service";
-import type { SignInRequest } from "@/types/auth.types";
+import type { SignInRequest, SignUpRequest } from "@/types/auth.types";
 
 export function useAuth() {
   const context = useContext(AuthContext);
@@ -22,6 +22,10 @@ export function useAuth() {
     context?.setUser(user);
   }
 
+  async function signup(input: SignUpRequest) {
+    return authService.signUp(input);
+  }
+
   async function signout() {
     await authService.signOut();
   }
@@ -30,6 +34,7 @@ export function useAuth() {
     login,
     isLoggedIn,
     signout,
+    signup,
     loading: context.loading,
   };
 }
