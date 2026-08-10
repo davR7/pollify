@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-class LogoutController {
+class SignOutController {
   async handler(req: Request, res: Response) {
     const refressToken = req.cookies.jwt;
     if (!refressToken) {
@@ -11,4 +11,4 @@ class LogoutController {
   }
 }
 
-export { LogoutController };
+export { SignOutController };
