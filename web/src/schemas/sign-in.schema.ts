@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 export const signinSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Enter a valid email"),
-
+  email: z
+    .email({ error: "Digite um e-mail válido." }).toLowerCase(),
   password: z
     .string()
-    .min(1, "Password is required")
-    .min(6, "Password must be at least 6 characters"),
+    .min(1, "A senha é obrigatória.")
+    .min(6, "A senha deve ter pelo menos 8 caracteres."),
 });
 
 export type SigninFormData = z.infer<typeof signinSchema>;
