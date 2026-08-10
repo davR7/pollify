@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/auth/AuthContext";
 import { setAccessToken } from "@/services/access-token.store";
-import { getProfile, signIn } from "@/services/auth.service";
+import * as authService from "@/services/auth.service";
 import type { SignInRequest } from "@/types/auth.types";
 
 export function useAuth() {
@@ -16,14 +16,19 @@ export function useAuth() {
   }
 
   async function login(input: SignInRequest) {
-    const response = await signIn(input);
+    const response = await authService.signIn(input);
     setAccessToken(response.accessToken);
-    const user = await getProfile();
+    const user = await authService.getProfile();
     context?.setUser(user);
+  }
+
+  async function signout() {
+    await authService.signOut();
   }
 
   return {
     login,
     isLoggedIn,
+    signout,
   };
 }
