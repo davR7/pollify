@@ -4,11 +4,17 @@ import type {
   RefreshTokenResponse,
   SignInRequest,
   SignInResponse,
+  SignUpRequest,
+  SignUpResponse,
 } from "@/types/auth.types";
 
 export async function signIn(input: SignInRequest): Promise<SignInResponse> {
   const response = await api.post("/auth/signin", input);
   return response.data;
+}
+
+export async function signUp(input: SignUpRequest): Promise<SignUpResponse> {
+  return await api.post("/auth/signup", input);
 }
 
 export async function getProfile(): Promise<MeResponse> {
