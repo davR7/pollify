@@ -30,5 +30,6 @@ export function useAuth() {
     login,
     isLoggedIn,
     signout,
+    loading: context.loading,
   };
 }
