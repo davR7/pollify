@@ -5,5 +5,6 @@ export type SetUser = Dispatch<SetStateAction<User | null>>;
 
 export interface AuthContextType {
   user: User | null;
+  loading: boolean;
   setUser: SetUser;
 }
