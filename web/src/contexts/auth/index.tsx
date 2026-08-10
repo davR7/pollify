@@ -2,12 +2,13 @@ import type { AxiosError } from "axios";
 import type { PropsWithChildren } from "react";
 import { useLayoutEffect, useState } from "react";
 import { api, apiPrivate, type RetryableRequestConfig } from "@/libs/api";
-import { getAccessToken } from "@/services/access-token.store";
+import { clearAccessToken, getAccessToken, setAccessToken } from "@/services/access-token.store";
 import { AuthContext } from "./AuthContext";
 import type { AuthContextType } from "./auth.types";
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<AuthContextType["user"] | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useLayoutEffect(() => {
     const requestIntercept = apiPrivate.interceptors.request.use(
@@ -48,5 +49,22 @@ export function AuthProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
-  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>;
+  useLayoutEffect(() => {
+    async function restoreSession() {
+      try {
+        const restoken = await api.post("/auth/refresh");
+        setAccessToken(restoken.data.accessToken);
+        const resUser = await apiPrivate.get("/auth/me");
+        setUser(resUser.data);
+      } catch {
+        clearAccessToken()
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    restoreSession();
+  }, []);
+
+  return <AuthContext.Provider value={{ user, setUser, loading }}>{children}</AuthContext.Provider>;
 }
