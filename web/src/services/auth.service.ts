@@ -22,6 +22,5 @@ export async function refreshToken(): Promise<RefreshTokenResponse> {
 }
 
 export async function signOut() {
-  const response = await apiPrivate.post("/auth/signout");
-  console.log(response.data);
+  await apiPrivate.post("/auth/signout");
 }
