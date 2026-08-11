@@ -1,1 +1,0 @@
-export { CreatePollPage } from "./CreatePollPage";
