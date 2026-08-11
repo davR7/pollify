@@ -1,8 +1,8 @@
-import { CreatePollOutputDto } from "@/dtos/create-poll-output.dto";
+import { PollOutputDto } from "@/dtos/poll-output.dto";
 import { PersistedPollProps } from "@/entities/poll/poll.props";
 
 export class PollMapper {
-  static toCreatePollOutput(input: PersistedPollProps): CreatePollOutputDto {
+  static toCreatePollOutput(input: PersistedPollProps): PollOutputDto {
     return {
       id: input.id,
       title: input.title,

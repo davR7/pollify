@@ -5,11 +5,11 @@ import { PollRepository } from "@/repositories/poll.repository";
 class ListAvailablePollUseCase {
   constructor(private pollRepository: PollRepository) {}
 
-  async execute(): Promise<ListPollOutputDto[]> {
+  async execute(): Promise<ListPollOutputDto> {
     const polls = await this.pollRepository.findMany({
       status: [PollStatus.OPEN, PollStatus.CLOSED],
     });
-    return polls;
+    return { polls };
   }
 }
 

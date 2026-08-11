@@ -4,9 +4,9 @@ import { PollRepository } from "@/repositories/poll.repository";
 class ListPollUseCase {
   constructor(private pollRepository: PollRepository) {}
 
-  async execute(): Promise<ListPollOutputDto[]> {
+  async execute(): Promise<ListPollOutputDto> {
     const polls = await this.pollRepository.findAll();
-    return polls;
+    return { polls };
   }
 }
 

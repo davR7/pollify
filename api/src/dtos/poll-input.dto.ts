@@ -1,7 +1,7 @@
 import { PollOptionProps } from "@/entities/poll/poll.props";
 import { PollStatus } from "@/entities/poll/poll-status";
 
-export interface CreatePollInputDto {
+export interface PollInputDto {
   title: string;
   options: PollOptionProps[];
   status?: PollStatus;

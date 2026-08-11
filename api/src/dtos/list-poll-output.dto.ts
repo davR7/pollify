@@ -1,11 +1,5 @@
-import { PollStatus } from "@/entities/poll/poll-status";
+import { PollOutputDto } from "./poll-output.dto";
 
 export interface ListPollOutputDto {
-  id: string;
-  title: string;
-  status: PollStatus;
-  startsAt: Date | null;
-  endsAt: Date | null;
-  userId: string;
-  createdAt: Date;
+  polls: PollOutputDto[];
 }
