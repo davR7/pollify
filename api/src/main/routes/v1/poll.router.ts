@@ -38,7 +38,7 @@ export default (router: Router) => {
       await createPoll.handler(req, res);
     },
   );
-  router.get("/my/polls", authMiddleware(jwtTokenProvider), async (req: Request, res: Response) => {
+  router.get("/me/polls", authMiddleware(jwtTokenProvider), async (req: Request, res: Response) => {
     await listPollUser.handler(req, res);
   });
   router.get("/polls", authMiddleware(jwtTokenProvider), async (req: Request, res: Response) => {
