@@ -4,7 +4,7 @@ import { SignInPage, SignUpPage } from "../pages/auth";
 import { MyPollsPage } from "../pages/polls/my-polls";
 import { NewPollPage } from "../pages/polls/new-poll";
 import { PollDetailsPage } from "../pages/polls/poll-details";
-import { PollList } from "../pages/polls/polls-list";
+import { PollsPage } from "../pages/polls/polls";
 import { NotFoundPage } from "../pages/system/not-found";
 import { RequireAuth } from "./guards/RequireAuth";
 
@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "/polls",
-            element: <PollList />,
+            element: <PollsPage />,
           },
           {
             path: "/polls/:id",
