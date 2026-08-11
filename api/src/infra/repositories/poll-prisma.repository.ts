@@ -35,6 +35,14 @@ class PollPrismaRepository implements PollRepository {
         userId: filter?.userId,
         status: Array.isArray(filter?.status) ? { in: filter?.status } : filter?.status,
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            fullname: true,
+          },
+        },
+      },
     });
     return polls;
   }
