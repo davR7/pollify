@@ -1,9 +1,7 @@
 import z from "zod";
 
 export const signupSchema = z.object({
-  fullname: z
-    .string({ error: "fullname is required" })
-    .min(8, "fullname must contain at least 8 characters."),
+  fullname: z.string({ error: "fullname is required" }),
   email: z.email({ error: "email is invalid" }).toLowerCase(),
   password: z
     .string({ error: "password is required" })
