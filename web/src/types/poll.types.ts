@@ -1,18 +1,32 @@
 import type { Poll } from "@/models/poll.model";
 
-interface PollUser {
+export interface PollUser {
   id: string;
   fullname: string;
 }
 
-interface PollWithUser extends Poll {
-  user: PollUser;
+export interface PollWithUser extends Poll {
+  user?: PollUser;
 }
 
-export interface PollsResponse {
+export type ModalPollStatus = "DRAFT" | "OPEN";
+
+export interface PollStatusPayload {
+  status: ModalPollStatus;
+  startsAt: string;
+  endsAt: string;
+}
+
+export interface FormPoll extends Omit<Poll, "status"> {
+  status: ModalPollStatus;
+}
+
+export interface MyPollsResponse {
+  polls: FormPoll[];
+}
+
+export interface ListPollResponse {
   polls: PollWithUser[];
 }
 
-export interface MePollsResponse {
-  polls: Poll[];
-}
+export interface UpdatePollResponse extends Poll {}
