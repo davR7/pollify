@@ -5,7 +5,7 @@ import { ListPollUseCase } from "@/use-cases/poll/list-poll.use-case";
 class ListPollController {
   constructor(private listPollUseCase: ListPollUseCase) {}
 
-  async handler(_req: ExpressRequest<unknown>, res: ExpressResponse<ListPollOutputDto[]>) {
+  async handler(_req: ExpressRequest<unknown>, res: ExpressResponse<ListPollOutputDto>) {
     const output = await this.listPollUseCase.execute();
     return res.json(output);
   }

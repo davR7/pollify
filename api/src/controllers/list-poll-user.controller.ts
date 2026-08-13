@@ -8,7 +8,7 @@ class ListPollUserController {
 
   async handler(
     _req: ExpressRequest<ListPollUserInputDto>,
-    res: ExpressResponse<ListPollOutputDto[]>,
+    res: ExpressResponse<ListPollOutputDto>,
   ) {
     const userId = res.locals.userId;
     const output = await this.listPollUserUseCase.execute({ userId });

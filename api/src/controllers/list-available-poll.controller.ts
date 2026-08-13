@@ -5,7 +5,7 @@ import { ListAvailablePollUseCase } from "@/use-cases/poll/list-available-poll.u
 class ListAvailablePollController {
   constructor(private listPollUseCase: ListAvailablePollUseCase) {}
 
-  async handler(_req: ExpressRequest<unknown>, res: ExpressResponse<ListPollOutputDto[]>) {
+  async handler(_req: ExpressRequest<unknown>, res: ExpressResponse<ListPollOutputDto>) {
     const output = await this.listPollUseCase.execute();
     return res.json(output);
   }
