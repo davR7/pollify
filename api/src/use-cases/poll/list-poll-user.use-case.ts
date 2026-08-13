@@ -7,7 +7,7 @@ class ListPollUserUseCase {
 
   async execute(input: ListPollUserInputDto): Promise<ListPollOutputDto> {
     const polls = await this.pollRepository.findMany({
-      userId: input.userId,
+      filter: { userId: input.userId },
     });
     return { polls };
   }

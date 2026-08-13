@@ -4,7 +4,7 @@ import {
   PollOptionProps,
   PollProps,
 } from "@/entities/poll/poll.props";
-import { FindPollFilter, PollRepository } from "@/repositories/poll.repository";
+import { FindManyOptions, PollRepository } from "@/repositories/poll.repository";
 import { prisma } from "../database/prisma";
 
 class PollPrismaRepository implements PollRepository {
@@ -25,16 +25,7 @@ class PollPrismaRepository implements PollRepository {
     return newPoll;
   }
   async findAll(): Promise<PersistedPoll[]> {
-    const polls = await prisma.poll.findMany();
-    return polls;
-  }
-  async findMany(filter: FindPollFilter): Promise<PersistedPoll[]> {
     const polls = await prisma.poll.findMany({
-      where: {
-        id: filter?.id,
-        userId: filter?.userId,
-        status: Array.isArray(filter?.status) ? { in: filter?.status } : filter?.status,
-      },
       include: {
         user: {
           select: {
@@ -43,6 +34,26 @@ class PollPrismaRepository implements PollRepository {
           },
         },
       },
+    });
+    return polls;
+  }
+  async findMany({ filter, includeUser }: FindManyOptions): Promise<PersistedPoll[]> {
+    const polls = await prisma.poll.findMany({
+      where: {
+        id: filter?.id,
+        userId: filter?.userId,
+        status: Array.isArray(filter?.status) ? { in: filter?.status } : filter?.status,
+      },
+      include: includeUser
+        ? {
+            user: {
+              select: {
+                id: true,
+                fullname: true,
+              },
+            },
+          }
+        : undefined,
     });
     return polls;
   }

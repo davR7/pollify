@@ -7,7 +7,8 @@ class ListAvailablePollUseCase {
 
   async execute(): Promise<ListPollOutputDto> {
     const polls = await this.pollRepository.findMany({
-      status: [PollStatus.OPEN, PollStatus.CLOSED],
+      filter: { status: [PollStatus.OPEN, PollStatus.CLOSED] },
+      includeUser: true,
     });
     return { polls };
   }
