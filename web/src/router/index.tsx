@@ -3,7 +3,7 @@ import { PrivateLayout, PublicLayout } from "../layouts";
 import { SignInPage, SignUpPage } from "../pages/auth";
 import { MyPollsPage } from "../pages/polls/my-polls";
 import { NewPollPage } from "../pages/polls/new-poll";
-import { PollDetailsPage } from "../pages/polls/poll-details";
+import { PollVotePage } from "../pages/polls/poll-vote";
 import { PollsPage } from "../pages/polls/polls";
 import { NotFoundPage } from "../pages/system/not-found";
 import { RequireAuth } from "./guards/RequireAuth";
@@ -37,8 +37,8 @@ export const router = createBrowserRouter([
             element: <PollsPage />,
           },
           {
-            path: "/polls/:id",
-            element: <PollDetailsPage />,
+            path: "/polls/:pollId/votes",
+            element: <PollVotePage />,
           },
           {
             path: "/polls/new",
