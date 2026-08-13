@@ -1,15 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { Grid } from "@/components/ui/Grid";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { formatDate } from "@/libs/format-date";
-import { getPollsWithUser } from "@/services/poll.service";
+import { getMyPolls } from "@/services/poll.service";
+import type { FormPoll } from "@/types/poll.types";
 import { PollCard } from "../components/poll-card";
+import { UpdatePollModal } from "./components/update-poll-modal";
 
 export function MyPollsPage() {
+  const [selectedPoll, setSelectedPoll] = useState<FormPoll | null>(null);
+
   const { data: output } = useQuery({
-    queryKey: ["pollsWithUser"],
-    queryFn: getPollsWithUser,
+    queryKey: ["polls", "me"],
+    queryFn: getMyPolls,
   });
 
   return (
@@ -18,14 +22,16 @@ export function MyPollsPage() {
       <Grid>
         {output?.polls.map((poll) => (
           <PollCard
+            poll={poll}
             key={poll.id}
-            id={poll.id}
-            title={poll.title}
-            startsAt={formatDate(poll.startsAt)}
-            endAt={formatDate(poll.endsAt)}
+            showAuthor={false}
+            onEdit={() => setSelectedPoll(poll)}
           />
         ))}
       </Grid>
+      {selectedPoll && (
+        <UpdatePollModal onClose={() => setSelectedPoll(null)} poll={selectedPoll} />
+      )}
     </Container>
   );
 }
