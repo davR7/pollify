@@ -30,3 +30,19 @@ export interface ListPollResponse {
 }
 
 export interface UpdatePollResponse extends Poll {}
+
+interface PollOptionWithVote {
+  id: string;
+  text: string;
+  votes: string;
+  pollId: string;
+  createdAt: string;
+}
+
+export interface GetPollVoteDetailsResponse extends Omit<Poll, "options"> {
+  options: PollOptionWithVote[];
+  totalVotes: number;
+  userVote: {
+    optionId: string;
+  } | null;
+}
