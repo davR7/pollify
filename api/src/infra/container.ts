@@ -1,19 +1,20 @@
+import { GetCurrentUserUseCase } from "@/use-cases/auth/get-current-user.use-case";
+import { RefreshTokenUseCase } from "@/use-cases/auth/refresh-token.use-case";
+import { SignInUseCase } from "@/use-cases/auth/sign-in.use-case";
+import { SignUpUseCase } from "@/use-cases/auth/sign-up.use-case";
 import { CreatePollUseCase } from "@/use-cases/poll/create-poll.use-case";
 import { DeletePollUseCase } from "@/use-cases/poll/delete-poll.use-case";
 import { ListAvailablePollUseCase } from "@/use-cases/poll/list-available-poll.use-case";
 import { ListPollUseCase } from "@/use-cases/poll/list-poll.use-case";
 import { ListPollUserUseCase } from "@/use-cases/poll/list-poll-user.use-case";
 import { UpdatePollUseCase } from "@/use-cases/poll/update-poll.use-case";
-import { SignUpUseCase } from "@/use-cases/auth/sign-up.use-case";
-import { SignInUseCase } from "@/use-cases/auth/sign-in.use-case";
 import { CreateVoteUseCase } from "@/use-cases/vote/create-vote.use-case";
+import { GetPollWithUserVoteUseCase } from "@/use-cases/vote/get-poll-with-user-vote.use-case";
 import { PollPrismaRepository } from "./repositories/poll-prisma.repository";
 import { UserPrismaRepository } from "./repositories/user-prisma.repository";
 import { VotePrismaRepository } from "./repositories/vote-prisma.repository";
 import { BcryptHasher } from "./security/bcrypt.hasher";
 import { JwtTokenProvider } from "./security/jwt-token-provider";
-import { GetCurrentUserUseCase } from "@/use-cases/auth/get-current-user.use-case";
-import { RefreshTokenUseCase } from "@/use-cases/auth/refresh-token.use-case";
 
 class Container {
   //repository
@@ -47,6 +48,10 @@ class Container {
   private readonly deletePollUseCase = new DeletePollUseCase(this.pollRepository);
   private readonly updatePollUseCase = new UpdatePollUseCase(this.pollRepository);
   private readonly createVoteUseCase = new CreateVoteUseCase(
+    this.voteRepository,
+    this.pollRepository,
+  );
+  private readonly PollWithUserVoteUseCase = new GetPollWithUserVoteUseCase(
     this.voteRepository,
     this.pollRepository,
   );
@@ -84,6 +89,9 @@ class Container {
   }
   getCreateVoteUseCase() {
     return this.createVoteUseCase;
+  }
+  getPollWithUserVoteUseCase() {
+    return this.PollWithUserVoteUseCase;
   }
 }
 
