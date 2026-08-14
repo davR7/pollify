@@ -50,7 +50,7 @@ export function PollCard({ poll, showAuthor = true, onEdit }: PollCardProps) {
           )}
           {poll.status !== "DRAFT" && (
             <Link
-              to={`/polls/${poll.id}`}
+              to={`/polls/${poll.id}/votes`}
               className="
     inline-block h-12 rounded-lg bg-primary-600
     px-6 text-sm font-semibold leading-12 text-white
