@@ -1,5 +1,6 @@
 import { apiPrivate } from "@/libs/api";
 import type {
+  GetPollVoteDetailsResponse,
   ListPollResponse,
   MyPollsResponse,
   PollStatusPayload,
@@ -24,5 +25,15 @@ export async function uptadePoll({
   payload: PollStatusPayload;
 }): Promise<UpdatePollResponse> {
   const response = await apiPrivate.patch(`/polls/${id}`, payload);
+  return response.data;
+}
+
+export async function getPollVoteDetails(pollId: string): Promise<GetPollVoteDetailsResponse> {
+  const response = await apiPrivate.get(`/polls/${pollId}/votes`);
+  return response.data;
+}
+
+export async function votePoll({ pollId, optionId }: { pollId: string; optionId: string }) {
+  const response = await apiPrivate.post(`/polls/${pollId}/votes`, { optionId });
   return response.data;
 }
