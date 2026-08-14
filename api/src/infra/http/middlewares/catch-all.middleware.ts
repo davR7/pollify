@@ -1,10 +1,10 @@
-import { STATUS_CODES } from "node:http";
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 import { HttpError } from "@/shared/errors/http.error";
 
 function CatchAllMiddleware(err: Error, _req: Request, res: Response, _next: NextFunction) {
   const mode = process.env.NODE_ENV !== "production";
+  const serverMessage = mode ? err.message : "Internal server error";
 
   if (err instanceof ZodError) {
     return res.status(400).json({
@@ -15,18 +15,16 @@ function CatchAllMiddleware(err: Error, _req: Request, res: Response, _next: Nex
   }
 
   if (err instanceof HttpError) {
-    const message = mode ? err.message : STATUS_CODES[err.statusCode];
-
     return res.status(err.statusCode).json({
       error: err.name,
-      message: message,
+      message: err.message,
       statusCode: err.statusCode,
     });
   }
 
   return res.status(500).json({
-    name: "InternalServerError",
-    message: mode ? err.message : "Internal server error",
+    error: "InternalServerError",
+    message: serverMessage,
     statusCode: 500,
   });
 }
