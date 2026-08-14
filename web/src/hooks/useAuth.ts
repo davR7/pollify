@@ -28,6 +28,7 @@ export function useAuth() {
 
   async function signout() {
     await authService.signOut();
+    context?.setUser(null);
   }
 
   return {
