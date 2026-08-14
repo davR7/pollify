@@ -11,7 +11,7 @@ export type FindManyOptions = {
 };
 
 export interface PollRepository {
-  create(input: PollProps): Promise<PersistedPollProps>;
+  create(input: PollProps): Promise<PersistedPoll>;
   findById(id: string): Promise<PersistedPollProps | null>;
   findMany(options?: FindManyOptions): Promise<PersistedPoll[]>;
   update(id: string, input: Partial<PollProps>): Promise<PersistedPoll>;

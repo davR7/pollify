@@ -8,7 +8,7 @@ import { FindManyOptions, PollRepository } from "@/repositories/poll.repository"
 import { prisma } from "../database/prisma";
 
 class PollPrismaRepository implements PollRepository {
-  async create(input: PollProps): Promise<PersistedPollProps> {
+  async create(input: PollProps): Promise<PersistedPoll> {
     const newPoll = await prisma.poll.create({
       data: {
         ...input,
@@ -60,11 +60,46 @@ class PollPrismaRepository implements PollRepository {
   async findById(id: string): Promise<PersistedPollProps | null> {
     const poll = await prisma.poll.findUnique({
       where: { id },
-      include: {
-        options: true,
+      select: {
+        id: true,
+        title: true,
+        status: true,
+        startsAt: true,
+        endsAt: true,
+        createdAt: true,
+        _count: {
+          select: {
+            votes: true,
+          },
+        },
+        options: {
+          select: {
+            id: true,
+            text: true,
+            _count: {
+              select: { votes: true },
+            },
+            createdAt: true,
+          },
+          orderBy: {
+            text: "asc",
+          },
+        },
       },
     });
-    return poll;
+
+    if (!poll) return null;
+
+    const { _count, ...pollData } = poll;
+
+    return {
+      ...pollData,
+      totalVotes: poll._count.votes,
+      options: pollData.options.map((option) => {
+        const { _count, ...optionData } = option;
+        return { ...optionData, votes: option._count.votes };
+      }),
+    };
   }
   async update(id: string, input: Partial<PollProps>): Promise<PersistedPoll> {
     const poll = await prisma.poll.update({

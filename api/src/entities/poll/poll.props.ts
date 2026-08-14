@@ -11,6 +11,7 @@ export type PollProps = {
 
 export type PersistedPollProps = Omit<PersistedPoll, "userId"> & {
   options: PollOption[];
+  totalVotes: number;
 };
 
 export type PersistedPoll = {
@@ -21,7 +22,6 @@ export type PersistedPoll = {
   endsAt: Date | null;
   userId: string;
   createdAt: Date;
-  updatedAt: Date;
 };
 
 export type PollOptionProps = {
@@ -30,6 +30,6 @@ export type PollOptionProps = {
 
 export type PollOption = PollOptionProps & {
   id: string;
-  pollId: string;
+  votes: number;
   createdAt: Date;
 };
