@@ -43,12 +43,12 @@ export function PollVotePage() {
     <Container className="flex-1">
       <SectionSpace>
         <div className="mx-auto w-full max-w-xl overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <header className="bg-primary-600 px-8 py-10">
-            <h1 className="text-2xl font-medium leading-tight text-white sm:text-2xl">
+          <header className="bg-primary-600 px-6 py-6 sm:px-8 sm:py-10">
+            <h1 className="font-medium leading-tight text-white text-xl sm:text-2xl">
               {poll?.title}
             </h1>
           </header>
-          <div className="space-y-4 px-6 py-7 sm:px-8">
+          <div className="space-y-4 px-6 py-6 sm:px-8">
             {poll?.options.map((option) => {
               const isSelected = selectedOption === option.id;
               const isVoted = option.id === poll.userVote?.optionId;
@@ -61,7 +61,7 @@ export function PollVotePage() {
                   onClick={() => setSelectedOption(option.id)}
                   className={`
                 cursor-pointer flex w-full items-center rounded-xl border-2 px-5 py-5
-                text-left text-lg transition
+                text-left text-sm sm:text-base lg:text-lg transition
                 ${
                   isSelected || isVoted
                     ? "border-primary-600 bg-primary-50 text-primary-700 hover:border-primary-300 hover:bg-primary-50/50"
@@ -89,23 +89,23 @@ export function PollVotePage() {
             })}
           </div>
           <footer className="border-t border-slate-100 px-6 py-6 sm:px-8">
-            <div className="mb-5 flex items-center gap-2 text-sm text-slate-600">
-              <div className="flex flex-row justify-between w-full">
+            <div className="mb-5">
+              <div className="flex flex-col gap-2 sm:flex-row sm:justify-between w-full">
                 <div className="flex">
-                  <LuCalendarDays className="h-5 w-5" />
-                  <div className="pl-2">
+                  <LuCalendarDays className="h-5 w-5 font-medium text-slate-500" />
+                  <p className="pl-1 text-sm text-slate-500">
                     Término:{" "}
                     <strong className="font-medium text-slate-700">
                       {formatToDisplayDateTime(poll?.endsAt)}
                     </strong>
-                  </div>
+                  </p>
                 </div>
                 <div className="flex">
-                  <LuVote className="h-5 w-5" />
-                  <div className="pl-2">
+                  <LuVote className="h-5 w-5 font-medium text-slate-500" />
+                  <p className="pl-1 text-sm text-slate-500">
                     Total de votos:{" "}
                     <strong className="font-medium text-slate-700">{poll?.totalVotes}</strong>
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>
