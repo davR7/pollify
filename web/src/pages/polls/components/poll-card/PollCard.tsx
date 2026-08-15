@@ -6,12 +6,9 @@ export function PollCard({ poll, showAuthor = true, onEdit }: PollCardProps) {
   return (
     <div key={poll.id}>
       <article className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md mt-6 cursor-pointer">
-        <h2 className="text-lg font-semibold leading-snug text-gray-900">{poll?.title}</h2>
-        {showAuthor && (
-          <p className="text-base mt-4">
-            <strong className="font-medium text-gray-700">Autor:</strong> {poll?.user?.fullname}
-          </p>
-        )}
+        <h2 className="text-base sm:text-lg font-semibold leading-snug text-gray-900">
+          {poll?.title}
+        </h2>
         {poll?.status !== "DRAFT" && (
           <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500">
             <div className="flex items-center gap-2">
@@ -30,16 +27,22 @@ export function PollCard({ poll, showAuthor = true, onEdit }: PollCardProps) {
             </div>
           </div>
         )}
-        <div className="flex justify-end gap-2 mt-4">
+        <footer className="flex justify-between items-center gap-2 mt-4 border-t border-slate-200 pt-4">
+          {showAuthor && (
+            <div className="">
+              <p className="text-sm sm:text-base text-gray-700">Autor:</p>
+              <p className="text-base font-medium">{poll?.user?.fullname}</p>
+            </div>
+          )}
+
           {poll?.status === "DRAFT" && onEdit && (
             <button
               type="button"
               onClick={() => onEdit()}
               className="
-    inline-block h-12 rounded-lg bg-primary-600
-    px-6 text-sm font-semibold leading-12 text-white
-    shadow-sm transition
-    hover:bg-primary-700
+    inline-block h-10 rounded-lg bg-primary-600
+    px-6 text-sm font-semibold leading-10 text-white
+    ml-auto shadow-sm transition hover:bg-primary-700
     focus:outline-none focus:ring-4 focus:ring-[#27aabd]/20
     active:scale-[0.99]
     cursor-pointer
@@ -52,10 +55,9 @@ export function PollCard({ poll, showAuthor = true, onEdit }: PollCardProps) {
             <Link
               to={`/polls/${poll.id}/votes`}
               className="
-    inline-block h-12 rounded-lg bg-primary-600
-    px-6 text-sm font-semibold leading-12 text-white
-    shadow-sm transition
-    hover:bg-primary-700
+    inline-block h-10 rounded-lg bg-primary-600
+    px-6 text-sm font-semibold leading-10 text-white
+    ml-auto shadow-sm transition hover:bg-primary-700
     focus:outline-none focus:ring-4 focus:ring-[#27aabd]/20
     active:scale-[0.99]
   "
@@ -63,7 +65,7 @@ export function PollCard({ poll, showAuthor = true, onEdit }: PollCardProps) {
               Detalhes
             </Link>
           )}
-        </div>
+        </footer>
       </article>
     </div>
   );
