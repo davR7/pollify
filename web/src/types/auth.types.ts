@@ -1,6 +1,9 @@
-import type { User } from "../models/user.model";
-
-export type MeResponse = User;
+export type MeResponse = {
+  id: string;
+  fullname: string;
+  email: string;
+  role: string;
+}
 
 export interface SignInRequest {
   email: string;
