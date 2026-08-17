@@ -1,5 +1,7 @@
 import { apiPrivate } from "@/libs/api";
 import type {
+  CreatePoll,
+  CreatePollResponse,
   GetPollVoteDetailsResponse,
   ListPollResponse,
   MyPollsResponse,
@@ -14,6 +16,11 @@ export async function getMyPolls(): Promise<MyPollsResponse> {
 
 export async function getPollsWithUser(): Promise<ListPollResponse> {
   const response = await apiPrivate.get("/polls");
+  return response.data;
+}
+
+export async function createPoll(input: CreatePoll): Promise<CreatePollResponse> {
+  const response = await apiPrivate.post("/polls", input);
   return response.data;
 }
 
