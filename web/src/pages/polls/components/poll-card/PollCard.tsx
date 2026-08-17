@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/Button";
+import { LinkButton } from "@/components/ui/LinkButton";
 import { formatToDisplayDateTime } from "@/libs/format-date";
 import type { PollCardProps } from "./poll-card.props";
 
@@ -36,34 +37,12 @@ export function PollCard({ poll, showAuthor = true, onEdit }: PollCardProps) {
           )}
 
           {poll?.status === "DRAFT" && onEdit && (
-            <button
-              type="button"
-              onClick={() => onEdit()}
-              className="
-    inline-block h-10 rounded-lg bg-primary-600
-    px-6 text-sm font-semibold leading-10 text-white
-    ml-auto shadow-sm transition hover:bg-primary-700
-    focus:outline-none focus:ring-4 focus:ring-[#27aabd]/20
-    active:scale-[0.99]
-    cursor-pointer
-  "
-            >
+            <Button type="button" onClick={() => onEdit()}>
               Publicar
-            </button>
+            </Button>
           )}
           {poll.status !== "DRAFT" && (
-            <Link
-              to={`/polls/${poll.id}/votes`}
-              className="
-    inline-block h-10 rounded-lg bg-primary-600
-    px-6 text-sm font-semibold leading-10 text-white
-    ml-auto shadow-sm transition hover:bg-primary-700
-    focus:outline-none focus:ring-4 focus:ring-[#27aabd]/20
-    active:scale-[0.99]
-  "
-            >
-              Detalhes
-            </Link>
+            <LinkButton to={`/polls/${poll.id}/votes`}>Detalhes</LinkButton>
           )}
         </footer>
       </article>

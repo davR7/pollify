@@ -5,8 +5,9 @@ import { GoCircleSlash } from "react-icons/go";
 import { LuCalendarDays, LuVote } from "react-icons/lu";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { Container } from "@/components/layout/container";
 import { SectionSpace } from "@/components/layout/section-space";
-import { Container } from "@/components/ui/Container";
+import { Button } from "@/components/ui/Button";
 import { Loading } from "@/components/ui/Loading";
 import { formatToDisplayDateTime } from "@/libs/format-date";
 import { queryClient } from "@/libs/react-query";
@@ -42,7 +43,7 @@ export function PollVotePage() {
   return (
     <Container className="flex-1">
       <SectionSpace>
-        <div className="mx-auto w-full max-w-xl overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="mx-auto w-full max-w-lg overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
           <header className="bg-primary-600 px-6 py-6 sm:px-8 sm:py-10">
             <h1 className="font-medium leading-tight text-white text-xl sm:text-2xl">
               {poll?.title}
@@ -120,19 +121,9 @@ export function PollVotePage() {
                 Você já votou nesta enquete
               </p>
             ) : (
-              <button
-                type="button"
-                onClick={handleVote}
-                className="
-      w-full rounded-lg bg-primary-600 px-6 py-3.5
-      cursor-pointer text-sm font-semibold text-white
-      shadow-sm transition
-      hover:bg-primary-700
-      focus:outline-none focus:ring-4 focus:ring-primary-200
-    "
-              >
+              <Button type="button" size="block" onClick={handleVote}>
                 Votar
-              </button>
+              </Button>
             )}
           </footer>
         </div>

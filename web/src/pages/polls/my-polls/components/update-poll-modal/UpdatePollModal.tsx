@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/Button";
 import { formatToInputDateTime, initialStartDate } from "@/libs/format-date";
 import { queryClient } from "@/libs/react-query";
 import { type UpdatePollFormData, updatePollSchema } from "@/schemas/update-poll.schema";
@@ -48,7 +49,7 @@ export function UpdatePollModal({ onClose, poll }: UpdatePollModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+      <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900">Atualizar enquete</h2>
           <p className="mt-1 text-sm text-gray-500">Altere o status e o período da enquete.</p>
@@ -95,19 +96,10 @@ export function UpdatePollModal({ onClose, poll }: UpdatePollModalProps) {
             {errors.endsAt && <p className="mt-1 text-sm text-red-600">{errors.endsAt.message}</p>}
           </div>
           <div className="flex justify-end gap-3 border-t border-gray-100 pt-5">
-            <button
-              type="button"
-              onClick={onClose}
-              className="cursor-pointer rounded-lg px-4 py-2.5 text-sm font-medium text-gray-600 transition hover:bg-gray-100 disabled:opacity-50"
-            >
+            <Button type="button" variant="ghost" onClick={onClose}>
               Cancelar
-            </button>
-            <button
-              type="submit"
-              className="cursor-pointer rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Salvar
-            </button>
+            </Button>
+            <Button type="submit">Salvar</Button>
           </div>
         </form>
       </div>

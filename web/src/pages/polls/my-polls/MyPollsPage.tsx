@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Container } from "@/components/ui/Container";
-import { Grid } from "@/components/ui/Grid";
+import { Container } from "@/components/layout/container";
+import { Grid } from "@/components/layout/grid";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { getMyPolls } from "@/services/poll.service";
 import type { FormPoll } from "@/types/poll.types";

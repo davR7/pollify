@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { Container } from "@/components/ui/Container";
-import { Grid } from "@/components/ui/Grid";
+import { Container } from "@/components/layout/container";
+import { Grid } from "@/components/layout/grid";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { getPollsWithUser } from "@/services/poll.service";
 import { PollCard } from "../components/poll-card";
