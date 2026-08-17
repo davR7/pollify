@@ -1,4 +1,4 @@
-import type { Poll } from "@/models/poll.model";
+import type { Poll, PollStatus } from "@/models/poll.model";
 
 export interface PollUser {
   id: string;
@@ -45,4 +45,21 @@ export interface GetPollVoteDetailsResponse extends Omit<Poll, "options"> {
   userVote: {
     optionId: string;
   } | null;
+}
+
+export interface OptionPoll {
+  text: string;
+}
+
+export interface CreatePoll {
+  title: string;
+  options: OptionPoll[];
+}
+
+export interface CreatePollResponse extends CreatePoll {
+  id: string;
+  status: PollStatus;
+  startsAt: string;
+  endsAt: string;
+  createdAt: string;
 }
