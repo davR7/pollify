@@ -7,7 +7,7 @@ import {
 } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import type { CreatePollFormData } from "@/schemas/create-poll-schema";
+import type { CreatePollFormData } from "@/schemas/create-poll.schema";
 
 interface PollOptionsFieldProps {
   fields: FieldArrayWithId<CreatePollFormData, "options">[];
@@ -30,12 +30,16 @@ export function PollOptionsField({
       <div className="space-y-5">
         {fields.map((field, index) => (
           <div key={field.id}>
-            <div className="flex gap-2">
-              <Input
-                input={`option-${index + 1}`}
-                placeholder={`Opção ${index + 1}`}
-                {...register(`options.${index}.text`)}
-              />
+            <div className="flex">
+              <div className="w-full">
+                <Input
+                  className="flex-1"
+                  input={`option-${index + 1}`}
+                  placeholder={`Opção ${index + 1}`}
+                  {...register(`options.${index}.text`)}
+                  error={errors.options?.[index]?.text?.message}
+                />
+              </div>
               {fields.length > 2 && (
                 <Button
                   type="button"
@@ -48,9 +52,6 @@ export function PollOptionsField({
                 </Button>
               )}
             </div>
-            {errors.options?.[index]?.text && (
-              <p className="mt-1 text-sm text-red-600">{errors.options[index]?.text?.message}</p>
-            )}
           </div>
         ))}
       </div>
