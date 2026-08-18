@@ -46,7 +46,7 @@ export function SignInPage() {
   return (
     <Container className="min-h-screen lg:flex lg:items-center lg:justify-center">
       <div className="w-full max-w-md">
-        <AuthHeader description="Faça login e descubra o que a comunidade está perguntando." />
+        <AuthHeader description="Descubra o que a comunidade está perguntando." />
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <InputGroup
             label="Email"
