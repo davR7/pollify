@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { FiUserPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -30,11 +30,16 @@ export function SignInPage() {
       await login(input);
       return navigate("/");
     } catch (err: unknown) {
-      if (err instanceof AxiosError) {
-        console.log(err.response?.data.message);
-        setError("root", {
-          message: err.response?.data.message,
-        });
+      if (isAxiosError(err)) {
+        if (err.status === 401) {
+          setError("root", {
+            message: "E-mail ou senha incorretos.",
+          });
+        } else {
+          setError("root", {
+            message: "Oops, erro desconhecido.",
+          });
+        }
       }
     }
   };
