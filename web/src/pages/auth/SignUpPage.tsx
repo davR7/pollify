@@ -34,9 +34,15 @@ export function SignUpPage() {
       });
     } catch (err: unknown) {
       if (isAxiosError(err)) {
-        setError("root", {
-          message: err.response?.data.message,
-        });
+        if (err.status === 409) {
+          setError("root", {
+            message: "O e-mail informado já está em uso.",
+          });
+        } else {
+          setError("root", {
+            message: "Oops, erro desconhecido.",
+          });
+        }
       }
     }
   };
