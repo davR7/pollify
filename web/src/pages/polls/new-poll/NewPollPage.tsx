@@ -7,7 +7,7 @@ import { SectionSpace } from "@/components/layout/section-space";
 import { Button } from "@/components/ui/Button";
 import { InputGroup } from "@/components/ui/InputGroup";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { type CreatePollFormData, createPollSchema } from "@/schemas/create-poll-schema";
+import { type CreatePollFormData, createPollSchema } from "@/schemas/create-poll.schema";
 import { createPoll } from "@/services/poll.service";
 import { PollOptionsField } from "./components/PollOptionsField";
 
@@ -53,11 +53,11 @@ export function NewPollPage() {
   return (
     <Container className="flex-1">
       <SectionSpace>
-        <div className="mx-auto w-full max-w-lg overflow-hidden rounded-xl">
-          <SectionHeader
-            title="Nova enquete"
-            description="Faça uma pergunta e descubra diferentes opiniões."
-          />
+        <SectionHeader
+          title="Nova enquete"
+          description="Faça uma pergunta e descubra diferentes opiniões."
+        />
+        <div className="mx-auto w-full max-w-lg rounded-xl mt-12">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="rounded-md border border-slate-200 bg-white p-6 shadow-sm"
@@ -66,8 +66,7 @@ export function NewPollPage() {
               label="Título"
               input="title"
               type="text"
-              autoComplete="Digite aqui a sua pergunta"
-              placeholder="Seu e-mail"
+              placeholder="Digite aqui a sua pergunta"
               error={errors.title?.message}
               {...register("title")}
             />
