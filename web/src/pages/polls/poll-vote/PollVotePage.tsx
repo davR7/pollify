@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { GoCircleSlash } from "react-icons/go";
@@ -12,12 +13,18 @@ import { Loading } from "@/components/ui/Loading";
 import { formatToDisplayDateTime } from "@/libs/format-date";
 import { queryClient } from "@/libs/react-query";
 import { getPollVoteDetails, votePoll } from "@/services/poll.service";
+import { PollNotFound } from "../components/poll-not-found";
 
 export function PollVotePage() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const { pollId } = useParams<{ pollId: string }>();
 
-  const { data: poll, isPending } = useQuery({
+  const {
+    data: poll,
+    isPending,
+    error,
+    isError,
+  } = useQuery({
     queryKey: ["poll", pollId],
     queryFn: () => getPollVoteDetails(pollId!),
     enabled: Boolean(pollId),
@@ -31,14 +38,32 @@ export function PollVotePage() {
     },
   });
 
+  if (isPending) return <Loading />;
+
+  if (isError && isAxiosError(error)) {
+    return <PollNotFound />;
+  }
+
   const hasVoted = Boolean(poll?.userVote?.optionId);
 
   function handleVote() {
-    if (!pollId || !selectedOption) return;
-    mutate({ pollId, optionId: selectedOption });
+    try {
+      if (!pollId) {
+        throw new Error("Enquete não encontrada.");
+      }
+      if (!selectedOption) {
+        throw new Error("Você precisa selecionar uma opção antes de votar.");
+      }
+      mutate({ pollId, optionId: selectedOption });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      }
+      if (isAxiosError(err)) {
+        toast.error("Ops! Ocorreu um erro inesperado.");
+      }
+    }
   }
-
-  if (isPending) return <Loading />;
 
   return (
     <Container className="flex-1">
