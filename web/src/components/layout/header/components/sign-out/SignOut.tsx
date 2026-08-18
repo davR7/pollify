@@ -13,7 +13,7 @@ export function SignOut() {
 
   return (
     <button
-      className="flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-700/70 transition-colors hover:text-primary-800"
+      className="flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-500 md:hover:text-primary-500 transition-colors"
       type="button"
       onClick={handlerSignOut}
     >
