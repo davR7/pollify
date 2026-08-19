@@ -4,7 +4,7 @@
   "description": "A REST API that allows users to create polls, manage options, and vote securely",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsup",
+    "build": "prisma generate && prisma migrate deploy && tsup",
     "dev": "tsx watch --env-file=.env src/main/index.ts",
     "start": "node dist/index.js"
   },
