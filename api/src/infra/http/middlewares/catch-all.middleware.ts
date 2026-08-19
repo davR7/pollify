@@ -2,25 +2,34 @@ import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 import { HttpError } from "@/shared/errors/http.error";
 
-function CatchAllMiddleware(err: Error, _req: Request, res: Response, _next: NextFunction) {
+function CatchAllMiddleware(error: Error, req: Request, res: Response, _next: NextFunction) {
   const mode = process.env.NODE_ENV !== "production";
-  const serverMessage = mode ? err.message : "Internal server error";
+  const serverMessage = mode ? error.message : "Internal server error";
 
-  if (err instanceof ZodError) {
+  if (error instanceof ZodError) {
     return res.status(400).json({
       error: "ValidationFailed",
-      message: err.issues[0].message,
+      message: error.issues[0].message,
       statusCode: 400,
     });
   }
 
-  if (err instanceof HttpError) {
-    return res.status(err.statusCode).json({
-      error: err.name,
-      message: err.message,
-      statusCode: err.statusCode,
+  if (error instanceof HttpError) {
+    req.log.warn(
+      {
+        statusCode: error.statusCode,
+      },
+      error.message,
+    );
+
+    return res.status(error.statusCode).json({
+      error: error.name,
+      message: error.message,
+      statusCode: error.statusCode,
     });
   }
+
+  req.log.error({ err: error }, "Unhandled error");
 
   return res.status(500).json({
     error: "InternalServerError",
