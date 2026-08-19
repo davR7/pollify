@@ -15,6 +15,16 @@ class CreateVoteController {
     const { pollId } = req.params as CreateVoteParamsDto;
     const userId = res.locals.userId;
     const output = await this.createVoteUseCase.execute({ ...body, pollId, userId });
+
+    req.log.info(
+      {
+        pollId,
+        optionId: body.optionId,
+        userId,
+      },
+      "Vote registered",
+    );
+
     return res.status(201).json(output);
   }
 }

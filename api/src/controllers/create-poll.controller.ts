@@ -10,6 +10,15 @@ class CreatePollController {
     const body = req.body;
     const userId = res.locals.userId;
     const output = await this.createPollUseCase.execute({ ...body, userId });
+
+    req.log.info(
+      {
+        pollId: output.id,
+        userId,
+      },
+      "Poll created",
+    );
+
     return res.status(201).json(output);
   }
 }

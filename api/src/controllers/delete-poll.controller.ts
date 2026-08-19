@@ -8,6 +8,15 @@ class DeletePollController {
   async handler(req: ExpressRequest<unknown>, res: ExpressResponse<void>) {
     const { id } = req.params as DeleteVoteInputDto;
     await this.deletePollUseCase.execute({ id });
+
+    req.log.info(
+      {
+        pollId: id,
+        userId: res.locals.userId,
+      },
+      "Poll deleted",
+    );
+
     return res.sendStatus(200);
   }
 }

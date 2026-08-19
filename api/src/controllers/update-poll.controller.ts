@@ -14,6 +14,15 @@ class UpdatePollController {
     const body = req.body;
     const { id } = req.params as UpdatePollParamsDto;
     const output = await this.updatePollUseCase.execute(id, body);
+
+    req.log.info(
+      {
+        pollId: id,
+        userId: res.locals.userId,
+      },
+      "Poll updated",
+    );
+
     return res.json(output);
   }
 }

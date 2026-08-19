@@ -9,12 +9,21 @@ class SignInController {
 
   async handler(req: ExpressRequest<SignInInputDto>, res: ExpressResponse<SignInOutputDto>) {
     const { accessToken, refreshToken } = await this.signInUseCase.execute(req.body);
+
     res.cookie(REFRESH_COOKIE_NAME, refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: REFRESH_COOKIE_MAX_AGE,
     });
+
+    req.log.info(
+      {
+        userId: res.locals.id,
+      },
+      "User signed in",
+    );
+
     return res.json({ accessToken });
   }
 }
