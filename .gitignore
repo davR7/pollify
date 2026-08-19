@@ -1,3 +1,0 @@
-node_modules
-api/src/infra/database/prisma/generated/
-.env
