@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, Router } from "express";
 import helmet from "helmet";
+import { httpLogger, logger } from "../config/logging";
 import { CatchAllMiddleware } from "./middlewares/catch-all.middleware";
 import { NotFoundMiddleware } from "./middlewares/not-found.middleware";
 
@@ -15,6 +16,7 @@ class App {
   }
 
   private setupLoaders() {
+    this.app.use(httpLogger);
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
     this.app.use(cookieParser());
@@ -28,6 +30,9 @@ class App {
   }
 
   private setupRoutes() {
+    this.app.get("/test-error", (req, res) => {
+      throw new Error("Erro interno simulado");
+    });
     this.app.use(this.router);
   }
 
@@ -38,7 +43,7 @@ class App {
 
   listen(port: number) {
     this.app.listen(port, () => {
-      console.log(`HTTP Server running at ${port}`);
+      logger.info(`HTTP Server running at ${port}`);
     });
   }
 }
