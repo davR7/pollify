@@ -1,5 +1,6 @@
 import { SignUpInputDto } from "@/dtos/sign-up-input.dto";
 import { SignUpOutputDto } from "@/dtos/sign-up-output.dto";
+import { User } from "@/entities/user/user.entity";
 import { UserRole } from "@/entities/user/user-role";
 import { UserMapper } from "@/mappers/user.mapper";
 import { UserRepository } from "@/repositories/user.repository";
@@ -18,12 +19,14 @@ class SignUpUseCase {
       throw new ConflictError("User Already exists");
     }
     const hash = await this.passwordHasher.hash(password);
-    const newUser = await this.userRepository.create({
-      fullname,
-      email,
-      password: hash,
-      role: UserRole.USER,
-    });
+    const newUser = await this.userRepository.create(
+      User.create({
+        fullname,
+        email,
+        password: hash,
+        role: UserRole.USER,
+      }),
+    );
     return UserMapper.toSignUpOutput(newUser);
   }
 }

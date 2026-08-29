@@ -10,5 +10,4 @@ export type UserProps = {
 export type PersistedUserProps = UserProps & {
   id: string;
   createdAt: Date;
-  updatedAt: Date;
 };

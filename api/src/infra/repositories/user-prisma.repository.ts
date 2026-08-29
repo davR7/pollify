@@ -1,23 +1,33 @@
-import { PersistedUserProps, UserProps } from "@/entities/user/user.props";
+import { User } from "@/entities/user/user.entity";
+import { UserMapper } from "@/mappers/user.mapper";
 import { UserRepository } from "@/repositories/user.repository";
 import { prisma } from "../database/prisma";
 
 class UserPrismaRepository implements UserRepository {
-  async create(input: UserProps): Promise<PersistedUserProps> {
+  async create(input: User): Promise<User> {
     const newUser = await prisma.user.create({
-      data: input,
+      data: {
+        id: input.id,
+        fullname: input.fullname,
+        email: input.email,
+        password: input.password,
+        role: input.role,
+        createdAt: input.createdAt,
+      },
     });
-    return newUser;
+    return UserMapper.toDomain(newUser);
   }
 
-  async findByEmail(email: string): Promise<PersistedUserProps | null> {
+  async findByEmail(email: string): Promise<User | null> {
     const user = await prisma.user.findUnique({ where: { email } });
-    return user;
+    if (!user) return null;
+    return UserMapper.toDomain(user);
   }
 
-  async findById(id: string): Promise<PersistedUserProps | null> {
+  async findById(id: string): Promise<User | null> {
     const user = await prisma.user.findUnique({ where: { id } });
-    return user;
+    if (!user) return null;
+    return UserMapper.toDomain(user);
   }
 }
 

@@ -1,7 +1,7 @@
-import { PersistedUserProps, UserProps } from "@/entities/user/user.props";
+import { User } from "@/entities/user/user.entity";
 
 export interface UserRepository {
-  create(input: UserProps): Promise<PersistedUserProps>;
-  findByEmail(email: string): Promise<PersistedUserProps | null>;
-  findById(id: string): Promise<PersistedUserProps | null>;
+  create(input: User): Promise<User>;
+  findByEmail(email: string): Promise<User | null>;
+  findById(id: string): Promise<User | null>;
 }
