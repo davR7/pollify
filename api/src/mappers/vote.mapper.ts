@@ -1,10 +1,30 @@
-import { GetPollWithUserVoteOutputDto } from "@/dtos/get-poll-with-user-vote-output";
-import { PersistedPollProps } from "@/entities/poll/poll.props";
+import { GetPollWithUserVoteOutputDto } from "@/dtos/get-poll-with-user-vote-output.dto";
+import { VoteOutputDto } from "@/dtos/vote-output.dto";
+import { Vote } from "@/entities/vote/vote.entity";
 import { PersistedVoteProps } from "@/entities/vote/vote.props";
+import { PollWithVotes } from "@/infra/repositories/ports/poll-with-votes";
 
 export class VoteMapper {
+  static toDomain(input: PersistedVoteProps): Vote {
+    return Vote.restore({
+      id: input.id,
+      optionId: input.optionId,
+      pollId: input.pollId,
+      userId: input.userId,
+      createdAt: input.createdAt,
+    });
+  }
+  static toVoteOutput(input: Vote): VoteOutputDto {
+    return {
+      id: input.id,
+      optionId: input.optionId,
+      pollId: input.pollId,
+      userId: input.userId,
+      createdAt: input.createdAt,
+    };
+  }
   static toPollWithUserVoteDto(
-    poll: PersistedPollProps,
+    poll: PollWithVotes,
     vote: PersistedVoteProps | null,
   ): GetPollWithUserVoteOutputDto {
     return {
@@ -20,7 +40,6 @@ export class VoteMapper {
             optionId: vote.optionId,
           }
         : null,
-      createdAt: poll.createdAt,
     };
   }
 }

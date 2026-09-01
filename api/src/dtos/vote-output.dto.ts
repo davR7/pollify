@@ -1,4 +1,4 @@
-export interface CreateVoteOutputDto {
+export interface VoteOutputDto {
   id: string;
   userId: string;
   pollId: string;

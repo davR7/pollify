@@ -6,5 +6,4 @@ export interface UpdatePollOutputDto {
   status: PollStatus;
   startsAt: Date;
   endsAt: Date;
-  createdAt: Date;
 }

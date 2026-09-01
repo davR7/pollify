@@ -15,7 +15,7 @@ class CreatePollUseCase {
         status: PollStatus.DRAFT,
       }),
     );
-    return PollMapper.toCreatePollOutput(newPoll);
+    return PollMapper.toPollOutput(newPoll);
   }
 }
 

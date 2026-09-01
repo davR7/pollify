@@ -50,14 +50,14 @@ model PollOption {
 }
 
 model Vote {
-  id        String     @id @default(uuid())
+  id        String     @id
   user      User       @relation(fields: [userId], references: [id])
   userId    String
   poll      Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
   pollId    String
   option    PollOption @relation(fields: [optionId], references: [id])
   optionId  String
-  createdAt DateTime   @default(now())
+  createdAt DateTime
 
   @@unique([pollId, userId])
   @@map("votes")
