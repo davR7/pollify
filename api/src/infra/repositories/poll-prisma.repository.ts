@@ -1,20 +1,27 @@
-import {
-  PersistedPoll,
-  PersistedPollProps,
-  PollOptionProps,
-  PollProps,
-} from "@/entities/poll/poll.props";
+import { Poll } from "@/entities/poll/poll.entity";
+import { PollProps } from "@/entities/poll/poll.props";
+import { PollMapper } from "@/mappers/poll.mapper";
 import { FindManyOptions, PollRepository } from "@/repositories/poll.repository";
 import { prisma } from "../database/prisma";
+import { PollWithAuthor } from "./ports/poll-with-author";
+import { PollWithVotes } from "./ports/poll-with-votes";
 
 class PollPrismaRepository implements PollRepository {
-  async create(input: PollProps): Promise<PersistedPoll> {
+  async create(input: Poll): Promise<Poll> {
     const newPoll = await prisma.poll.create({
       data: {
-        ...input,
+        id: input.id,
+        title: input.title,
+        status: input.status,
+        startsAt: input.startsAt,
+        endsAt: input.endsAt,
+        userId: input.userId,
+        createdAt: input.createdAt,
         options: {
-          create: input.options.map((option: PollOptionProps) => ({
+          create: input.options.map((option) => ({
+            id: option.id,
             text: option.text,
+            createdAt: option.createdAt,
           })),
         },
       },
@@ -22,42 +29,36 @@ class PollPrismaRepository implements PollRepository {
         options: true,
       },
     });
-    return newPoll;
+    return PollMapper.toDomain(newPoll);
   }
-  async findAll(): Promise<PersistedPoll[]> {
+
+  async findMany({ filter, includeUser }: FindManyOptions): Promise<PollWithAuthor[]> {
     const polls = await prisma.poll.findMany({
-      include: {
-        user: {
-          select: {
-            id: true,
-            fullname: true,
-          },
-        },
+      select: {
+        id: true,
+        title: true,
+        status: true,
+        startsAt: true,
+        endsAt: true,
+        user: includeUser
+          ? {
+              select: {
+                id: true,
+                fullname: true,
+              },
+            }
+          : undefined,
       },
-    });
-    return polls;
-  }
-  async findMany({ filter, includeUser }: FindManyOptions): Promise<PersistedPoll[]> {
-    const polls = await prisma.poll.findMany({
       where: {
         id: filter?.id,
         userId: filter?.userId,
         status: Array.isArray(filter?.status) ? { in: filter?.status } : filter?.status,
       },
-      include: includeUser
-        ? {
-            user: {
-              select: {
-                id: true,
-                fullname: true,
-              },
-            },
-          }
-        : undefined,
     });
     return polls;
   }
-  async findById(id: string): Promise<PersistedPollProps | null> {
+
+  async findById(id: string): Promise<PollWithVotes | null> {
     const poll = await prisma.poll.findUnique({
       where: { id },
       select: {
@@ -66,7 +67,6 @@ class PollPrismaRepository implements PollRepository {
         status: true,
         startsAt: true,
         endsAt: true,
-        createdAt: true,
         _count: {
           select: {
             votes: true,
@@ -101,7 +101,8 @@ class PollPrismaRepository implements PollRepository {
       }),
     };
   }
-  async update(id: string, input: Partial<PollProps>): Promise<PersistedPoll> {
+
+  async update(id: string, input: Partial<PollProps>): Promise<Poll> {
     const poll = await prisma.poll.update({
       where: { id },
       data: {
@@ -109,9 +110,13 @@ class PollPrismaRepository implements PollRepository {
         startsAt: input.startsAt,
         endsAt: input.endsAt,
       },
+      include: {
+        options: true,
+      },
     });
-    return poll;
+    return PollMapper.toDomain(poll);
   }
+
   async deleteById(id: string): Promise<void> {
     await prisma.poll.delete({ where: { id } });
   }

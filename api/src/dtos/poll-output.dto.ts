@@ -1,12 +1,12 @@
-import { PollOption } from "@/entities/poll/poll.props";
+import { PersistedOption } from "@/entities/poll/poll.props";
 import { PollStatus } from "@/entities/poll/poll-status";
 
 export interface PollOutputDto {
   id: string;
   title: string;
-  options?: PollOption[];
+  options: PersistedOption[];
   status: PollStatus;
-  startsAt: Date | null;
-  endsAt: Date | null;
+  startsAt: Date;
+  endsAt: Date;
   createdAt: Date;
 }

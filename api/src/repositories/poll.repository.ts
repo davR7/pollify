@@ -1,8 +1,10 @@
-import { PersistedPoll, PersistedPollProps, PollProps } from "@/entities/poll/poll.props";
+import { Poll } from "@/entities/poll/poll.entity";
 import { PollStatus } from "@/entities/poll/poll-status";
+import { PollWithAuthor } from "@/infra/repositories/ports/poll-with-author";
+import { PollWithVotes } from "@/infra/repositories/ports/poll-with-votes";
 
 export type FindManyOptions = {
-  filter: {
+  filter?: {
     id?: string;
     userId?: string;
     status?: PollStatus[];
@@ -11,9 +13,9 @@ export type FindManyOptions = {
 };
 
 export interface PollRepository {
-  create(input: PollProps): Promise<PersistedPoll>;
-  findById(id: string): Promise<PersistedPollProps | null>;
-  findMany(options?: FindManyOptions): Promise<PersistedPoll[]>;
-  update(id: string, input: Partial<PollProps>): Promise<PersistedPoll>;
+  create(input: Poll): Promise<Poll>;
+  findById(id: string): Promise<PollWithVotes | null>;
+  findMany(options: FindManyOptions): Promise<PollWithAuthor[]>;
+  update(id: string, input: Partial<Poll>): Promise<Poll>;
   deleteById(id: string): Promise<void>;
 }

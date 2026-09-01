@@ -1,10 +1,13 @@
 import { PollStatus } from "@/entities/poll/poll-status";
 
-export interface UpdatePollOutputDto {
+export type PollWithAuthor = {
   id: string;
   title: string;
   status: PollStatus;
   startsAt: Date;
   endsAt: Date;
-  createdAt: Date;
-}
+  user?: {
+    id: string;
+    fullname: string;
+  };
+};

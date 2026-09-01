@@ -5,7 +5,9 @@ class ListPollUseCase {
   constructor(private pollRepository: PollRepository) {}
 
   async execute(): Promise<ListPollOutputDto> {
-    const polls = await this.pollRepository.findMany();
+    const polls = await this.pollRepository.findMany({
+      includeUser: true,
+    });
     return { polls };
   }
 }
