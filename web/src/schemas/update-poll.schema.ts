@@ -5,15 +5,21 @@ export const updatePollSchema = z
     status: z.enum(["DRAFT", "OPEN"], {
       error: "Selecione um status válido.",
     }),
-    startsAt: z.string().min(1, "A data de início é obrigatória."),
-    endsAt: z.string().min(1, "A data de encerramento é obrigatória."),
+    startsAt: z
+      .string()
+      .min(1, "A data de início é obrigatória.")
+      .refine((value) => {
+        const todayString = new Date().toISOString().split("T")[0];
+        return value === todayString;
+      }, "A data de início deve ser hoje."),
+    endsAt: z.string().min(1, "A data de término é obrigatória."),
   })
   .refine((data) => data.status !== "DRAFT", {
-    error: "É permitido salvar a enquete como rascunho.",
+    error: "Não é possível salvar como rascunho.",
     path: ["status"],
   })
   .refine((data) => new Date(data.endsAt) > new Date(data.startsAt), {
-    message: "A data de encerramento deve ser posterior ao início.",
+    message: "A data de término deve ser posterior ao início.",
     path: ["endsAt"],
   });
 

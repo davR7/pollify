@@ -19,11 +19,17 @@ export const createPollSchema = z
       )
       .min(2, "Adicione pelo menos 2 opções.")
       .max(4, "Você pode adicionar no máximo 4 opções."),
-    startsAt: z.string().min(1, "A data de início é obrigatória."),
+    startsAt: z
+      .string()
+      .min(1, "A data de início é obrigatória.")
+      .refine((value) => {
+        const todayString = new Date().toISOString().split("T")[0];
+        return value >= todayString;
+      }, "A data de início deve ser atual ou futura."),
     endsAt: z.string().min(1, "A data de término é obrigatória."),
   })
   .refine((data) => new Date(data.endsAt) > new Date(data.startsAt), {
-    message: "A data de encerramento deve ser posterior ao início.",
+    message: "A data de término deve ser posterior ao início.",
     path: ["endsAt"],
   });
 
