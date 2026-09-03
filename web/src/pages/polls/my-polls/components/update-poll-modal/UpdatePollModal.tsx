@@ -4,7 +4,8 @@ import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
-import { formatToInputDateTime, initialStartDate } from "@/libs/format-date";
+import { formatToInputDate } from "@/libs/format-date";
+import { normalizePollDates } from "@/libs/normalizePollDates";
 import { queryClient } from "@/libs/react-query";
 import { type UpdatePollFormData, updatePollSchema } from "@/schemas/update-poll.schema";
 import { uptadePoll } from "@/services/poll.service";
@@ -19,8 +20,8 @@ export function UpdatePollModal({ onClose, poll }: UpdatePollModalProps) {
     resolver: zodResolver(updatePollSchema),
     defaultValues: {
       status: poll?.status,
-      startsAt: poll.startsAt ? formatToInputDateTime(poll.startsAt) : initialStartDate(),
-      endsAt: poll.endsAt ? formatToInputDateTime(poll.endsAt) : initialStartDate(),
+      startsAt: formatToInputDate(poll.startsAt),
+      endsAt: formatToInputDate(poll.endsAt),
     },
   });
 
@@ -39,11 +40,14 @@ export function UpdatePollModal({ onClose, poll }: UpdatePollModalProps) {
   });
 
   async function handleUpdatePoll(data: UpdatePollFormData): Promise<void> {
+    const { inputStartsAt, inputEndsAt } = normalizePollDates(data);
+
     const payload = {
       status: data.status,
-      startsAt: new Date(data.startsAt).toISOString(),
-      endsAt: new Date(data.endsAt).toISOString(),
+      startsAt: inputStartsAt.toISOString(),
+      endsAt: inputEndsAt.toISOString(),
     };
+
     mutate({ id: poll.id, payload });
   }
 
@@ -75,7 +79,7 @@ export function UpdatePollModal({ onClose, poll }: UpdatePollModalProps) {
             </label>
             <input
               id="startsAt"
-              type="datetime-local"
+              type="date"
               {...register("startsAt")}
               className="w-full rounded-lg border border-gray-300 px-3 py-2.5 outline-none transition focus:border-primary-600 focus:ring-2 focus:ring-primary-600/20"
             />
@@ -85,11 +89,11 @@ export function UpdatePollModal({ onClose, poll }: UpdatePollModalProps) {
           </div>
           <div>
             <label htmlFor="endsAt" className="mb-2 block text-sm font-medium text-gray-700">
-              Data de encerramento
+              Data de término
             </label>
             <input
               id="endsAt"
-              type="datetime-local"
+              type="date"
               {...register("endsAt")}
               className="w-full rounded-lg border border-gray-300 px-3 py-2.5 outline-none transition focus:border-primary-600 focus:ring-2 focus:ring-primary-600/20"
             />

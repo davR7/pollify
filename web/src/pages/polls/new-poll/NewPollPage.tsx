@@ -7,6 +7,7 @@ import { SectionSpace } from "@/components/layout/section-space";
 import { Button } from "@/components/ui/Button";
 import { InputGroup } from "@/components/ui/InputGroup";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { normalizePollDates } from "@/libs/normalizePollDates";
 import { type CreatePollFormData, createPollSchema } from "@/schemas/create-poll.schema";
 import { createPoll } from "@/services/poll.service";
 import { PollOptionsField } from "./components/PollOptionsField";
@@ -40,12 +41,15 @@ export function NewPollPage() {
     },
   });
 
-  const onSubmit = async (data: CreatePollFormData) => {
+  const handleCreatePoll = async (data: CreatePollFormData) => {
+    const { inputStartsAt, inputEndsAt } = normalizePollDates(data);
+
     const payload = {
       ...data,
-      startsAt: new Date(data.startsAt).toISOString(),
-      endsAt: new Date(data.endsAt).toISOString(),
+      startsAt: inputStartsAt.toISOString(),
+      endsAt: inputEndsAt.toISOString(),
     };
+
     await mutateAsync(payload);
     reset();
   };
@@ -59,7 +63,7 @@ export function NewPollPage() {
         />
         <div className="mx-auto w-full max-w-lg rounded-xl mt-12">
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(handleCreatePoll)}
             className="rounded-md border border-slate-200 bg-white p-6 shadow-sm"
           >
             <InputGroup
@@ -81,14 +85,14 @@ export function NewPollPage() {
               <InputGroup
                 label="Data de início"
                 input="start-date"
-                type="datetime-local"
+                type="date"
                 error={errors.startsAt?.message}
                 {...register("startsAt")}
               />
               <InputGroup
                 label="Data de término"
                 input="end-date"
-                type="datetime-local"
+                type="date"
                 error={errors.endsAt?.message}
                 {...register("endsAt")}
               />
