@@ -15,6 +15,7 @@ export type FindManyOptions = {
 export interface PollRepository {
   create(input: Poll): Promise<Poll>;
   findById(id: string): Promise<PollWithVotes | null>;
+  findExpiredByStatus(status: PollStatus): Promise<void>;
   findMany(options: FindManyOptions): Promise<PollWithAuthor[]>;
   update(id: string, input: Partial<Poll>): Promise<Poll>;
   deleteById(id: string): Promise<void>;

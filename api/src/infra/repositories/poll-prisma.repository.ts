@@ -5,6 +5,7 @@ import { FindManyOptions, PollRepository } from "@/repositories/poll.repository"
 import { prisma } from "../database/prisma";
 import { PollWithAuthor } from "./ports/poll-with-author";
 import { PollWithVotes } from "./ports/poll-with-votes";
+import { PollStatus } from "@/entities/poll/poll-status";
 
 class PollPrismaRepository implements PollRepository {
   async create(input: Poll): Promise<Poll> {
@@ -119,6 +120,20 @@ class PollPrismaRepository implements PollRepository {
 
   async deleteById(id: string): Promise<void> {
     await prisma.poll.delete({ where: { id } });
+  }
+
+  async findExpiredByStatus(status: PollStatus): Promise<void> {
+    await prisma.poll.updateMany({
+      where: {
+        status,
+        endsAt: {
+          lte: new Date(),
+        },
+      },
+      data: {
+        status: "CLOSED",
+      },
+    });
   }
 }
 
